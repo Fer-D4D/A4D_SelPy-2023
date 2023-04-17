@@ -1,9 +1,6 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 # Config
-
-
 
 # Test Data
 TEST_URL = "https://duckduckgo.com/"
@@ -14,9 +11,12 @@ TEXT_2_SEARCH = "Peaches, peaches"
 # Test Elements
 CSS_SEARCH_INPUT_TEXT = "#search_form_input_homepage"
 ID_SEARCH_BUTTON = "search_button_homepage"
-# SEARCH_BUTTON = "XPATH://input[@id='search_button_homepage']"
 XPATH_FIRST_RESULT_TITTLE_SPAN = "//div[@id='links']/child::div[1]//child::div[2]//span"
 XPATH_FIRST_RESULT_SUMMARY_SPAN = "//div[@id='links']/child::div[1]//child::div[3]//child::span[%$%]"
+MENU_BUTTON = "CSS:.header__button--menu.js-side-menu-open"
+MENU_SECTION_HEADERS = "XPATH:"
+FIRST_RESULT_TITTLE_SPAN = "XPATH://div[@id='links']/child::div[1]//child::div[2]//span"
+FIRST_RESULT_SUMMARY_SPAN = "XPATH://div[@id='links']/child::div[1]//child::div[3]//child::span[%$%]"
 
 # Test Actions
 
