@@ -7,6 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 
 
@@ -44,7 +45,7 @@ class Common:
         if self.browser == "edge":
             return webdriver.Edge(EdgeChromiumDriverManager().install())
         if self.browser == "firefox":
-            return webdriver.Firefox(GeckoDriverManager().install())
+            return webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
         return self.driver
 
@@ -58,6 +59,7 @@ class Common:
         self.driver.get(base_url)
         self.driver.maximize_window()
         self.page_loaded(anchor_locator_definition)
+        return self.driver
 
     def get_element_old(self, locator_type, locator_definition):
         if locator_type.lower() == "css":
@@ -108,3 +110,9 @@ class Common:
         time.sleep(effect_time)
         apply_style(original_style)
         return element
+
+    def screen_shot(self):
+        S = lambda X: self.driver.execute_script('return document.body.parentNode.scroll' + X)
+        self.driver.set_window_size(S('Width'),
+                               S('Height'))  # May need manual adjustment
+        self.driver.find_element(By.TAG_NAME,'body').screenshot('web_screenshot.png')

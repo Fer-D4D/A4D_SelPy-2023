@@ -28,6 +28,7 @@ search_input_element.clear()
 search_input_element.send_keys(TEXT_2_SEARCH)
 search_button_element = driver.find_element(By.ID, ID_SEARCH_BUTTON)
 search_button_element.click()
+
 search_result_tittle = driver.find_element(By.XPATH, XPATH_FIRST_RESULT_TITTLE_SPAN)
 print(search_result_tittle.text)
 search_result_body_1 = driver.find_element(By.XPATH, XPATH_FIRST_RESULT_SUMMARY_SPAN.replace("%$%", "1"))
