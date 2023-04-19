@@ -2,7 +2,9 @@ import time
 
 from selenium import webdriver
 from selenium.common import NoSuchElementException, TimeoutException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -54,7 +56,7 @@ class Common:
         self.driver.get(base_url)
         self.driver.maximize_window()
 
-    def launch_site(self, base_url, anchor_locator_definition):
+    def launch_site(self, base_url, anchor_locator_definition="//body"):
         self.driver = self.set_webdriver()
         self.driver.get(base_url)
         self.driver.maximize_window()
@@ -79,12 +81,18 @@ class Common:
             return self.highlight(self.driver.find_element(By.XPATH, locator_definition.replace("XPATH:", "")),
                                   self.HIGHLIGHT_DURATION,
                                   self.HIGHLIGHT_COLOR, self.HIGHLIGHT_BORDER)
+        if "NAME:" in locator_definition:
+            return self.highlight(
+                self.driver.find_element(By.XPATH, locator_definition.replace("NAME:", "//*[@name='") +
+                                         "']"),
+                self.HIGHLIGHT_DURATION,
+                self.HIGHLIGHT_COLOR, self.HIGHLIGHT_BORDER)
 
     def do_click_old(self, locator_type, locator_definition):
         self.get_element_old(locator_type, locator_definition).click()
 
     def do_click(self, locator_definition):
-        self.get_element(locator_definition).click()
+        ActionChains(self.driver).move_to_element(self.get_element(locator_definition)).click().perform()
 
     def fill_input_text_old(self, locator_type, locator_definition, text):
         self.get_element_old(locator_type, locator_definition).send_keys(text)
@@ -111,8 +119,5 @@ class Common:
         apply_style(original_style)
         return element
 
-    def screen_shot(self):
-        S = lambda X: self.driver.execute_script('return document.body.parentNode.scroll' + X)
-        self.driver.set_window_size(S('Width'),
-                               S('Height'))  # May need manual adjustment
-        self.driver.find_element(By.TAG_NAME,'body').screenshot('web_screenshot.png')
+    def select_dropdown_option(self, locator_definition, text_value):
+        Select(self.get_element(locator_definition)).select_by_visible_text(text_value)
