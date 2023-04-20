@@ -87,6 +87,12 @@ class Common:
                                          "']"),
                 self.HIGHLIGHT_DURATION,
                 self.HIGHLIGHT_COLOR, self.HIGHLIGHT_BORDER)
+        if "LINK_TEXT:" in locator_definition:
+            return self.highlight(
+                self.driver.find_element(By.XPATH, locator_definition.replace("LINK_TEXT:", "//a[contains(text(),'") +
+                                         "')]"),
+                self.HIGHLIGHT_DURATION,
+                self.HIGHLIGHT_COLOR, self.HIGHLIGHT_BORDER)
 
     def do_click_old(self, locator_type, locator_definition):
         self.get_element_old(locator_type, locator_definition).click()
