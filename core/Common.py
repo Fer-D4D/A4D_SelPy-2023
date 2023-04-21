@@ -23,9 +23,11 @@ class Common:
     HIGHLIGHT_COLOR = "green"
     HIGHLIGHT_BORDER = 3
     HIGHLIGHT_DURATION = 1
+    VIEWER_MODE = False
 
-    def __init__(self, browser='chrome'):
+    def __init__(self, browser='chrome', viewer_mode=False):
         self.browser = browser.lower()
+        self.VIEWER_MODE = viewer_mode
 
     def page_loaded(self, anchor_locator_definition):
         try:
@@ -69,6 +71,8 @@ class Common:
         return self.driver.find_element(By.XPATH, locator_definition)
 
     def get_element(self, locator_definition):
+        if self.VIEWER_MODE:
+            waste_some_time(2)
         if "CSS:" in locator_definition:
             return self.highlight(self.driver.find_element(By.CSS_SELECTOR, locator_definition.replace("CSS:", "")),
                                   self.HIGHLIGHT_DURATION,
