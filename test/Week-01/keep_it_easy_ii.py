@@ -12,7 +12,7 @@ CONTACT_US_SUB_SELECT = "NAME:productListboxContactUs"
 LAPTOPS_OPTION = "XPATH://*[contains(text(),'Laptops')]"
 
 # Test Actions
-letsAutomate = Common(BROWSER)
+letsAutomate = Common(BROWSER, True)
 
 letsAutomate.launch_site(TEST_URL, SPECIAL_OFFER_MENU)
 
