@@ -49,7 +49,7 @@ class Common:
         if self.browser == "edge":
             return webdriver.Edge(EdgeChromiumDriverManager().install())
         if self.browser == "firefox":
-            return webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+            return webdriver.Firefox(FirefoxService(GeckoDriverManager().install()))
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
         return self.driver
 
