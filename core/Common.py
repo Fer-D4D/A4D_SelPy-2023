@@ -1,5 +1,6 @@
 import time
 
+from Screenshot import Screenshot
 from selenium import webdriver
 from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver import ActionChains
@@ -24,6 +25,7 @@ class Common:
     HIGHLIGHT_BORDER = 3
     HIGHLIGHT_DURATION = 1
     VIEWER_MODE = False
+    VIEWER_MODE_TIME = 1
 
     def __init__(self, browser='chrome', viewer_mode=False):
         self.browser = browser.lower()
@@ -72,7 +74,7 @@ class Common:
 
     def get_element(self, locator_definition):
         if self.VIEWER_MODE:
-            waste_some_time(2)
+            waste_some_time(self.VIEWER_MODE_TIME)
         if "CSS:" in locator_definition:
             return self.highlight(self.driver.find_element(By.CSS_SELECTOR, locator_definition.replace("CSS:", "")),
                                   self.HIGHLIGHT_DURATION,
@@ -104,6 +106,14 @@ class Common:
     def do_click(self, locator_definition):
         ActionChains(self.driver).move_to_element(self.get_element(locator_definition)).click().perform()
 
+    def do_click_from_options(self, locator_definitions):
+        for option in locator_definitions:
+            try:
+                self.do_click(option)
+                return True
+            except NoSuchElementException:
+                print("<"+option+"> Selector not found trying next")
+
     def fill_input_text_old(self, locator_type, locator_definition, text):
         self.get_element_old(locator_type, locator_definition).send_keys(text)
 
@@ -131,3 +141,23 @@ class Common:
 
     def select_dropdown_option(self, locator_definition, text_value):
         Select(self.get_element(locator_definition)).select_by_visible_text(text_value)
+
+    def full_screenshot(self, name, path=r'.'):
+        ob = Screenshot.Screenshot()
+        ob.full_Screenshot(self.driver, path, name)
+
+    def page_back(self):
+        if self.VIEWER_MODE:
+            waste_some_time(self.VIEWER_MODE_TIME)
+        self.driver.execute_script("window.history.go(-1)")
+
+    def switch_browser_tab(self):
+        windows = self.driver.window_handles
+        self.driver.switch_to.window(windows[1])
+        if self.VIEWER_MODE:
+            waste_some_time(self.VIEWER_MODE_TIME)
+        self.driver.close()
+        self.driver.switch_to.window(windows[0])
+
+    def get_current_tab(self):
+        return self.driver.current_window_handle

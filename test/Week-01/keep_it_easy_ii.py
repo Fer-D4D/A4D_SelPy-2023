@@ -1,4 +1,4 @@
-from core.Common import Common, waste_some_time
+from core.Common import Common
 
 # Test Data
 TEST_URL = "http://advantageonlineshopping.com/"
