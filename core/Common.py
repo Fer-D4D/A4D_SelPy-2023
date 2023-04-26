@@ -1,6 +1,5 @@
 import time
 
-from Screenshot import Screenshot
 from selenium import webdriver
 from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver import ActionChains
@@ -141,10 +140,6 @@ class Common:
 
     def select_dropdown_option(self, locator_definition, text_value):
         Select(self.get_element(locator_definition)).select_by_visible_text(text_value)
-
-    def full_screenshot(self, name, path=r'.'):
-        ob = Screenshot.Screenshot()
-        ob.full_Screenshot(self.driver, path, name)
 
     def page_back(self):
         if self.VIEWER_MODE:
