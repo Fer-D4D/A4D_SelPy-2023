@@ -102,7 +102,9 @@ class Common:
     def get_element_by_text(self, locator_definition, target_text):
         element_list = self.driver.find_elements(By.CSS_SELECTOR, locator_definition.replace("CSS:", ""))
         for element in element_list:
+            print("<" + element.text + "> is not the target text. Trying next!")
             if element.text == target_text:
+                print("<" + element.text + "> target text found.")
                 return element
 
     def do_click_old(self, locator_type, locator_definition):
@@ -123,7 +125,8 @@ class Common:
                 print("<" + option + "> Selector is invalid please check it out.")
 
     def do_click_by_text(self, ambiguous_locator_definition, target_text):
-        ActionChains(self.driver).move_to_element(self.get_element_by_text(ambiguous_locator_definition, target_text)).click().perform()
+        ActionChains(self.driver).move_to_element(self.get_element_by_text(ambiguous_locator_definition, target_text)).\
+            click().perform()
 
     def fill_input_text_old(self, locator_type, locator_definition, text):
         self.get_element_old(locator_type, locator_definition).send_keys(text)
