@@ -14,8 +14,7 @@ HONK_MENU_ICON_BAD = "CSS:span.ddgsi.ddgsi-horm["
 EDGE_HONK_MENU_TWITTER_ICON = "CSS:a[href='https://twitter.com/duckduckgo'] img"
 CHROME_HONK_MENU_TWITTER_ICON = "CSS:a[href='https://twitter.com/duckduckgo'] svg"
 EXPAND_DESCRIPTION_BUTTON = "CSS:#faq-btn-8"
-AMBIGUOUS_CHROME_EXPAND_DESCRIPTION_BUTTON = "CSS:.legacy-homepage_legacyButton__oUMB9.legacy" \
-                                             "-homepage_faqButton__maJxW span "
+AMBIGUOUS_CHROME_EXPAND_DESCRIPTION_BUTTON = "CSS:.legacy-homepage_legacyButton__oUMB9.legacy-homepage_faqButton__maJxW"
 CHROME_EXPAND_DESCRIPTION_BUTTON = "CSS:#__next > main > article > section.legacy-homepage_faqSection__464Rq > " \
                                    "div.legacy-homepage_faqSectionBody__qmHgT > div > section:nth-child(9) > div > " \
                                    "div > p > a "

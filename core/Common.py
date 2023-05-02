@@ -17,6 +17,19 @@ def waste_some_time(waiting_time=5):
     time.sleep(waiting_time)
 
 
+def get_by_string(locator_definition):
+    if "CSS:" in locator_definition:
+        return ["css selector", locator_definition.replace("CSS:", "")]
+    if "ID:" in locator_definition:
+        return ["css selector", locator_definition.replace("ID:", "#")]
+    if "XPATH:" in locator_definition:
+        return ["xpath", locator_definition.replace("XPATH:", "")]
+    if "NAME:" in locator_definition:
+        return ["xpath", locator_definition.replace("NAME:", "//*[@name='") + "']"]
+    if "LINK_TEXT:" in locator_definition:
+        return ["xpath", locator_definition.replace("LINK_TEXT:", "//a[contains(text(),'") + "']"]
+
+
 class Common:
     driver = None
     PAGE_TIME_OUT = 15
@@ -25,6 +38,7 @@ class Common:
     HIGHLIGHT_DURATION = 1
     VIEWER_MODE = False
     VIEWER_MODE_TIME = 1
+    HIGHLIGHT_MODE = False
 
     def __init__(self, browser='chrome', viewer_mode=False):
         self.browser = browser.lower()
@@ -99,6 +113,13 @@ class Common:
                 self.HIGHLIGHT_DURATION,
                 self.HIGHLIGHT_COLOR, self.HIGHLIGHT_BORDER)
 
+    def get_element_ref(self, locator_definition):
+        if self.VIEWER_MODE:
+            waste_some_time(self.VIEWER_MODE_TIME)
+        by_string = get_by_string(locator_definition)
+        element = self.driver.find_element(by_string[0], by_string[1])
+        return element
+
     def get_element_by_text(self, locator_definition, target_text):
         element_list = self.driver.find_elements(By.CSS_SELECTOR, locator_definition.replace("CSS:", ""))
         for element in element_list:
@@ -125,14 +146,17 @@ class Common:
                 print("<" + option + "> Selector is invalid please check it out.")
 
     def do_click_by_text(self, ambiguous_locator_definition, target_text):
-        ActionChains(self.driver).move_to_element(self.get_element_by_text(ambiguous_locator_definition, target_text)).\
+        ActionChains(self.driver).move_to_element(self.get_element_by_text(ambiguous_locator_definition, target_text)). \
             click().perform()
 
     def fill_input_text_old(self, locator_type, locator_definition, text):
         self.get_element_old(locator_type, locator_definition).send_keys(text)
 
     def fill_input_text(self, locator_definition, text):
-        self.get_element(locator_definition).send_keys(text)
+        element = self.get_element(locator_definition)
+        element.clear()
+        element.clear()
+        element.send_keys(text)
 
     def get_text_from_element(self, locator_definition):
         try:
