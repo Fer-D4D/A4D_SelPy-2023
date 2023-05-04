@@ -1,4 +1,4 @@
-from core.Common import Common
+from core.Common_II import TinyCore
 
 # Test Data
 TEST_URL = "http://advantageonlineshopping.com/"
@@ -6,6 +6,9 @@ BROWSER = "edge"
 TEST_USER_NAME = "A4DUser-FER"
 TEST_EMAIL = "fer@a4d.tv"
 GENERIC_PASSWORD = "aaBB22"
+VIEWER_MODE = "ON"
+VERBOSE_MODE = "ON"
+HIGHLIGHT_MODE = "ON"
 
 # Test Web Elements
 
@@ -19,6 +22,9 @@ I_AGREE_CONDITIONS_CREATE_ACCOUNT_LOCATOR = "CSS:input[name='i_agree']"
 REGISTER_BUTTON_CREATE_ACCOUNT_LOCATOR = "ID:register_btnundefined"
 ALREADY_REGISTERED_MSG_CREATE_ACCOUNT_LOCATOR = "CSS:label[class='invalid center block smollMargin']"
 
-letsAutomate = Common(BROWSER)
+
+# Test Actions
+letsAutomate = TinyCore(BROWSER, VIEWER_MODE, VERBOSE_MODE, HIGHLIGHT_MODE)
 letsAutomate.launch_site(TEST_URL, MENU_USER_ICON_LOCATOR)
 
+letsAutomate.do_click(MENU_USER_ICON_LOCATOR)
