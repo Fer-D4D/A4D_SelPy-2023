@@ -39,6 +39,7 @@ class Common:
     VIEWER_MODE = False
     VIEWER_MODE_TIME = 1
     HIGHLIGHT_MODE = False
+    SELENIUM_WEBELEMENT_TYPE = 'selenium.webdriver.remote.webelement.WebElement'
 
     def __init__(self, browser='chrome', viewer_mode=False):
         self.browser = browser.lower()
