@@ -41,10 +41,17 @@ def map_to_boolean(word):
         return False
 
 
+def check_for_none_type(element):
+    if element is None:
+        return False
+    else:
+        return True
+
+
 class TinyCore:
     driver = None
     PAGE_TIME_OUT = 15
-    FLUENT_WAIT_TIMEOUT = 10
+    FLUENT_WAIT_TIMEOUT = 4
     FLUENT_WAIT_FREQ = 1
     HIGHLIGHT_COLOR = "green"
     HIGHLIGHT_BORDER = 3
@@ -94,8 +101,13 @@ class TinyCore:
             return element
         except NoSuchElementException:
             self.verbose_mode("<" + locator_definition + "> Selector not found, please check it out")
+            return None
         except InvalidSelectorException:
             self.verbose_mode("<" + locator_definition + "> Selector is invalid please check it out.")
+            return None
+        except TimeoutException:
+            self.verbose_mode("<" + locator_definition + "> Selector not found, please check it out")
+            return None
 
     def set_webdriver(self):
         if self.browser == "edge":
@@ -128,11 +140,12 @@ class TinyCore:
         return self.driver
 
     def go_to_element(self, web_element):
-        ActionChains(self.driver).move_to_element(web_element).perform()
+        if check_for_none_type(web_element):
+            ActionChains(self.driver).move_to_element(web_element).perform()
 
     def do_click(self, locator_definition):
         element = self.get_element(locator_definition)
-        if self.check_for_none_type(element):
+        if check_for_none_type(element):
             element.click()
             self.verbose_mode("Element <" + locator_definition + "> successfully clicked!")
             return True
@@ -142,7 +155,7 @@ class TinyCore:
 
     def fill_input_text(self, locator_definition, text):
         element = self.get_element(locator_definition)
-        if self.check_for_none_type(element):
+        if check_for_none_type(element):
             element.clear()
             element.send_keys(text)
             self.verbose_mode("Element <" + locator_definition + "> successfully filled in!")
@@ -151,22 +164,14 @@ class TinyCore:
             self.verbose_mode("Element <" + locator_definition + "> not filled in")
             return False
 
-    def check_for_none_type(self, element):
-        if not type(element) is None:
-            if self.VIEWER_MODE:
-                self.go_to_element(element)
-            return True
-        else:
-            return False
-
     def get_element_inner_text(self, locator_definition):
         element = self.get_element(locator_definition)
-        if self.check_for_none_type(element):
+        if check_for_none_type(element):
             return element.text
 
     def select_value_from_dropdown(self, locator_definition, desired_value):
         element = self.get_element(locator_definition)
-        if self.check_for_none_type(element):
+        if check_for_none_type(element):
             Select(element).select_by_visible_text(desired_value)
             return True
 

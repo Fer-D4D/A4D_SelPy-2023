@@ -10,7 +10,7 @@ HIGHLIGHT_MODE = "ON"
 # Test Elements
 SEARCH_INPUT_TEXT = "CSS:input[placeholder='Search the web without being tracked']"
 SEARCH_BUTTON = "CSS:.search__button.js-search-button"
-FIRST_RESULT_TITTLE_SPAN = "XPATH://div[@id='links']/child::div[1]//child::div[2]//span"
+FIRST_RESULT_TITTLE_SPAN = "XPATH://div[@id='links']/child::div[1]//child::div[2]//span3"
 
 # Test Actions
 # First use below line to initialize our super framework
