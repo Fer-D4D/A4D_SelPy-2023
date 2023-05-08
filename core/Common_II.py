@@ -2,7 +2,8 @@ import time
 from types import NoneType
 
 from selenium import webdriver
-from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException
+from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException, \
+    ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.support.select import Select
@@ -44,6 +45,8 @@ def map_to_boolean(word):
 class TinyCore:
     driver = None
     PAGE_TIME_OUT = 15
+    FLUENT_WAIT_TIMEOUT = 10
+    FLUENT_WAIT_FREQ = 1
     HIGHLIGHT_COLOR = "green"
     HIGHLIGHT_BORDER = 3
     HIGHLIGHT_DURATION = 1
@@ -81,9 +84,12 @@ class TinyCore:
 
     def get_element(self, locator_definition):
         self.viewer_mode()
+        wait = WebDriverWait(self.driver, self.FLUENT_WAIT_TIMEOUT, poll_frequency=self.FLUENT_WAIT_FREQ,
+                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
         by_string = get_by_string(locator_definition)
         try:
-            element = self.driver.find_element(by_string[0], by_string[1])
+            # element = self.driver.find_element(by_string[0], by_string[1])
+            element = wait.until(ec.element_to_be_clickable((by_string[0], by_string[1])))
             self.highlight_mode(element)
             self.verbose_mode("<" + locator_definition + "> Selector found!")
             return element
