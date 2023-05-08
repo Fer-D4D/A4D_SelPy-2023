@@ -1,5 +1,4 @@
 import time
-from types import NoneType
 
 from selenium import webdriver
 from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException, \
@@ -153,7 +152,7 @@ class TinyCore:
             return False
 
     def check_for_none_type(self, element):
-        if not type(element) is NoneType:
+        if not type(element) is None:
             if self.VIEWER_MODE:
                 self.go_to_element(element)
             return True
