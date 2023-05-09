@@ -15,18 +15,18 @@ for idx in una_lista:
 print()
 print("--------------------")
 
-for idx in range(16):  # for(int idx=0; idx < 16; idx++)
+for idx in range(1):  # for(int idx=0; idx < 16; idx++)
     print(idx, end=" ")
 print()
 print("--------------------")
 
-for idx in range(1, 10): # for(int idx=1; idx < 16; idx++)
+for idx in range(1, 11): # for(int idx=1; idx < 16; idx++)
     print(idx, end=" ")
 print()
 print("--------------------")
 
-for idx in range(0, 10, 2):
-    print(idx, end=" ")
+for fer in range(0, 10, 2):
+    print(fer, end=" ")
 print()
 print("--------------------")
 
@@ -37,9 +37,4 @@ while i <= 12:
 print()
 print("--------------------")
 
-i = 0
-while i <= 12:
-    print(i, end=" ")
-    if i == 5:
-        break
-    i += 1
+

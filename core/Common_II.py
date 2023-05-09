@@ -1,4 +1,5 @@
 import time
+import calendar;
 
 from selenium import webdriver
 from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException, \
@@ -17,7 +18,7 @@ from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.support import expected_conditions as ec
 
 
-def waste_some_time(waiting_time=5):
+def waste_some_time(waiting_time=4):
     time.sleep(waiting_time)
 
 
@@ -51,10 +52,11 @@ def check_for_none_type(element):
 class TinyCore:
     driver = None
     PAGE_TIME_OUT = 15
-    FLUENT_WAIT_TIMEOUT = 4
+    FLUENT_WAIT_TIMEOUT = 3
     FLUENT_WAIT_FREQ = 1
-    HIGHLIGHT_COLOR = "green"
-    HIGHLIGHT_BORDER = 3
+    DEFAULT_TIME_TO_WASTE = 3
+    HIGHLIGHT_COLOR = "red"
+    HIGHLIGHT_BORDER = 4
     HIGHLIGHT_DURATION = 1
     VIEWER_MODE = False
     VIEWER_MODE_TIME = 1
@@ -62,6 +64,7 @@ class TinyCore:
     HIGHLIGHT_MODE = False
     DEFAULT_TRUSTED_KEY_ELEMENT = "XPATH://body"
     SELENIUM_WEBELEMENT_TYPE = 'selenium.webdriver.remote.webelement.WebElement'
+    DEFAULT_SCREEN_SHOT_PATH = 'C:/SS_Automation'
 
     def __init__(self, browser='chrome', viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
@@ -80,8 +83,12 @@ class TinyCore:
 
     def highlight_mode(self, element):
         if self.HIGHLIGHT_MODE:
-            original_style = element.get_attribute('style')
-            self.apply_style(element, "border: {0}px solid {1};".format(self.HIGHLIGHT_BORDER, self.HIGHLIGHT_COLOR))
+            self.highlight_element(element)
+
+    def highlight_element(self, element, restore_style=True):
+        original_style = element.get_attribute('style')
+        self.apply_style(element, "border: {0}px solid {1};".format(self.HIGHLIGHT_BORDER, self.HIGHLIGHT_COLOR))
+        if restore_style:
             time.sleep(self.HIGHLIGHT_DURATION)
             self.apply_style(element, original_style)
 
@@ -156,6 +163,7 @@ class TinyCore:
     def fill_input_text(self, locator_definition, text):
         element = self.get_element(locator_definition)
         if check_for_none_type(element):
+            element.click()
             element.clear()
             element.send_keys(text)
             self.verbose_mode("Element <" + locator_definition + "> successfully filled in!")
@@ -167,13 +175,22 @@ class TinyCore:
     def get_element_inner_text(self, locator_definition):
         element = self.get_element(locator_definition)
         if check_for_none_type(element):
-            return element.text
+            inner_text = element.text
+            self.verbose_mode("The element <" + locator_definition + "> retrieves this text ->  " + inner_text)
+            return inner_text
+        else:
+            self.verbose_mode("The element <" + locator_definition + "> retrieves no text.")
+            return None
 
     def select_value_from_dropdown(self, locator_definition, desired_value):
         element = self.get_element(locator_definition)
         if check_for_none_type(element):
             Select(element).select_by_visible_text(desired_value)
+            self.verbose_mode("Desired value selected from Element <<" + locator_definition + ">")
             return True
+        else:
+            self.verbose_mode("Unable to select desire value from Element <" + locator_definition + ">")
+            return False
 
     def page_back(self):
         self.viewer_mode()
@@ -186,3 +203,44 @@ class TinyCore:
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
+    def get_full_screenshot(self, screen_shot_title, main_content=DEFAULT_TRUSTED_KEY_ELEMENT):
+        # Where to save the picture
+        # Video title
+        gmt = time.gmtime()
+        ts = calendar.timegm(gmt)
+
+        try:
+            # We try to get the top-level component in which all out page is its children
+            # This is different for each website
+            elem = self.get_element(main_content)
+            # Get the height of the element, and adding some height just to be sage
+            total_height = elem.size['height'] + 1000
+            # Set the window size - what is the size of our screenshot
+            # The width is hardcoded because the screensize is fixed for each computer
+            self.driver.set_window_size(1920, total_height)
+            # Wait for 2 seconds
+            waste_some_time(2)
+            # Take the screenshot
+            elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
+        except SystemError as err:
+            print('Take screenshot error at' + screen_shot_title)
+
+    def get_emphasis_screenshot(self, screen_shot_title, locator_definition):
+        gmt = time.gmtime()
+        ts = calendar.timegm(gmt)
+        try:
+            elem = self.get_element(self.DEFAULT_TRUSTED_KEY_ELEMENT)
+
+            # Get the height of the element, and adding some height just to be sage
+            total_height = elem.size['height'] + 1000
+            # Set the window size - what is the size of our screenshot
+            # The width is hardcoded because the screensize is fixed for each computer
+            self.driver.set_window_size(1920, total_height)
+            # Wait for 2 seconds
+            self.highlight_element(self.get_element(locator_definition), False)
+            # waste_some_time(2)
+
+            # Take the screenshot
+            elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
+        except SystemError as err:
+            print('Take screenshot error at' + screen_shot_title)
