@@ -12,6 +12,7 @@ HIGHLIGHT_MODE = "OFF"
 # Selectors normal way
 SEARCH_INPUT_TEXT = "CSS:input[placeholder='Search the web without being tracked']"
 SEARCH_BUTTON = "CSS:.search__button.js-search-button"
+
 FIRST_RESULT_TITTLE_SPAN = "XPATH://div[@id='links']/child::div[1]//child::div[2]//span"
 
 # Dictionary approach

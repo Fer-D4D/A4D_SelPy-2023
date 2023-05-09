@@ -18,7 +18,9 @@ FIRST_RESULT_TITTLE_SPAN = "XPATH://div[@id='links']/child::div[1]//child::div[2
 
 search_page_dic = {"search_input_text": "CSS:input[placeholder='Search the web without being tracked']",
                    "search_button": "CSS:.search__button.js-search-button"}
+
 search_result_page_dic = {"first_result_title_span": "XPATH://div[@id='links']/child::div[1]//child::div[2]//span"}
+
 duck_duck_go_site_dic = {"Search Page": search_page_dic, "Result Page": search_result_page_dic}
 
 
