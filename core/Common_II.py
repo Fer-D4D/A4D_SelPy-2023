@@ -1,5 +1,6 @@
 import time
 import calendar;
+from functools import wraps
 
 from selenium import webdriver
 from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException, \
@@ -18,7 +19,7 @@ from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.support import expected_conditions as ec
 
 
-def waste_some_time(waiting_time=4):
+def waste_some_time(waiting_time=1):
     time.sleep(waiting_time)
 
 
@@ -54,7 +55,7 @@ class TinyCore:
     PAGE_TIME_OUT = 15
     FLUENT_WAIT_TIMEOUT = 3
     FLUENT_WAIT_FREQ = 1
-    DEFAULT_TIME_TO_WASTE = 3
+    DEFAULT_TIME_TO_WASTE = 1
     HIGHLIGHT_COLOR = "red"
     HIGHLIGHT_BORDER = 4
     HIGHLIGHT_DURATION = 1
@@ -77,6 +78,9 @@ class TinyCore:
         if self.VIEWER_MODE:
             waste_some_time(self.VIEWER_MODE_TIME)
 
+    def set_viewer_mode(self, viewer_mode="Viewer-Mode-OFF"):
+        self.VIEWER_MODE = map_to_boolean(viewer_mode)
+
     def verbose_mode(self, verbose_msg):
         if self.VERBOSE_MODE:
             print(verbose_msg)
@@ -96,7 +100,7 @@ class TinyCore:
         self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);", element, style)
 
     def get_element(self, locator_definition):
-        self.viewer_mode()
+        # self.viewer_mode()
         wait = WebDriverWait(self.driver, self.FLUENT_WAIT_TIMEOUT, poll_frequency=self.FLUENT_WAIT_FREQ,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
         by_string = get_by_string(locator_definition)
@@ -146,6 +150,9 @@ class TinyCore:
         self.is_page_load(anchor_locator_definition)
         return self.driver
 
+    def set_driver(self, driver):
+        self.driver = driver
+
     def go_to_element(self, web_element):
         if check_for_none_type(web_element):
             ActionChains(self.driver).move_to_element(web_element).perform()
@@ -154,6 +161,7 @@ class TinyCore:
         element = self.get_element(locator_definition)
         if check_for_none_type(element):
             element.click()
+            self.viewer_mode()
             self.verbose_mode("Element <" + locator_definition + "> successfully clicked!")
             return True
         else:
@@ -166,6 +174,7 @@ class TinyCore:
             element.click()
             element.clear()
             element.send_keys(text)
+            self.viewer_mode()
             self.verbose_mode("Element <" + locator_definition + "> successfully filled in!")
             return True
         else:
@@ -176,6 +185,7 @@ class TinyCore:
         element = self.get_element(locator_definition)
         if check_for_none_type(element):
             inner_text = element.text
+            self.viewer_mode()
             self.verbose_mode("The element <" + locator_definition + "> retrieves this text ->  " + inner_text)
             return inner_text
         else:
@@ -186,6 +196,7 @@ class TinyCore:
         element = self.get_element(locator_definition)
         if check_for_none_type(element):
             Select(element).select_by_visible_text(desired_value)
+            self.viewer_mode()
             self.verbose_mode("Desired value selected from Element <<" + locator_definition + ">")
             return True
         else:
@@ -244,3 +255,8 @@ class TinyCore:
             elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
         except SystemError as err:
             print('Take screenshot error at' + screen_shot_title)
+
+    def get_number_of_elements(self, locator_definition):
+        by_string = get_by_string(locator_definition)
+        return len(self.driver.find_elements(by_string[0], by_string[1]))
+
