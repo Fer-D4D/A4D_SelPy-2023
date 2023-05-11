@@ -33,6 +33,6 @@ def test_sauce_login():
     lets_automate.fill_input_text(PASSWORD_FORM_TEXT, "secret_sauce")
     lets_automate.do_click(LOGIN_BUTTON)
 
-    check.equal(lets_automate.get_element_inner_text(TITLE_TEXT), "Swag Labs")
+    check.equal(lets_automate.get_element_inner_text(TITLE_TEXT), "Swas Labs")
     check.is_true(lets_automate.get_element_inner_text(TITLE_TEXT) == "Swag Labs")
 
