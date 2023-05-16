@@ -1,4 +1,4 @@
-from core.Common_II import TinyCore, timer
+from core.Common_II import TinyCore
 
 
 def check_button_state(button_web_element):
