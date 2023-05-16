@@ -23,6 +23,17 @@ def waste_some_time(waiting_time=1):
     time.sleep(waiting_time)
 
 
+def timer(f):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = f(*args, **kwargs)
+        stop_time = time.time()
+        dt = stop_time - start_time
+        print(f"Δt = {dt}")
+
+    return wrapper
+
+
 def get_by_string(locator_definition):
     if "CSS:" in locator_definition:
         return ["css selector", locator_definition.replace("CSS:", "")]
@@ -98,6 +109,7 @@ class TinyCore:
 
     def apply_style(self, element, style):
         self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);", element, style)
+
 
     def get_element(self, locator_definition):
         # self.viewer_mode()
@@ -256,7 +268,9 @@ class TinyCore:
         except SystemError as err:
             print('Take screenshot error at' + screen_shot_title)
 
-    def get_number_of_elements(self, locator_definition):
+    def get_elements_list(self, locator_definition):
         by_string = get_by_string(locator_definition)
-        return len(self.driver.find_elements(by_string[0], by_string[1]))
+        return self.driver.find_elements(by_string[0], by_string[1])
 
+    def get_number_of_elements(self, locator_definition):
+        return len(self.get_elements_list(locator_definition))
