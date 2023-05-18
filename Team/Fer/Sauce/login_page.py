@@ -25,7 +25,7 @@ class LoginPage(TinyCore):
         self.set_highlight_mode(highlight_mode)
 
     def do_login(self):
-        self.set_driver(self.driver)
+        # self.set_driver(self.driver)
         self.fill_input_text(self.sd.USER_NAME_FORM_FIELD, self.td.STANDARD_USER_NAME)
         self.fill_input_text(self.sd.PASSWORD_FORM_FIELD, self.td.GENERIC_PASSWORD)
         self.do_click(self.sd.LOGIN_BUTTON)
