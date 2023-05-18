@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 # Test Data
 TEST_URL = "https://duckduckgo.com/"
-BROWSER = "Edge"
+BROWSER = "edge"
 TEXT_2_SEARCH = "Peaches, peaches"
 
 
