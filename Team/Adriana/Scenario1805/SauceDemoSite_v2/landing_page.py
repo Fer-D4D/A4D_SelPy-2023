@@ -68,7 +68,5 @@ class LandingPage(TinyCore):
         if self.get_button_state(item_selector):
             self.do_click(item_selector)
 
-    def select_item_from_page2delete(self, item_selector):
-        if self.get_button_state(item_selector):
-            self.do_click(item_selector)
+
 
