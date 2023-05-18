@@ -2,7 +2,7 @@ from core.Common import Common
 
 # Test Data
 TEST_URL = "https://duckduckgo.com/"
-BROWSER = "chrome"
+BROWSER = "edge"
 TEXT_2_SEARCH = "Peaches, peaches"
 
 # Test Elements

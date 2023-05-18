@@ -2,6 +2,9 @@ import time
 import calendar;
 from functools import wraps
 
+import docx
+from Screenshot import Screenshot
+from docx.shared import Inches
 from selenium import webdriver
 from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException, \
     ElementNotVisibleException, ElementNotSelectableException
@@ -61,6 +64,10 @@ def check_for_none_type(element):
         return True
 
 
+def get_time_stamp():
+    return str(calendar.timegm(time.gmtime()))
+
+
 class TinyCore:
     driver = None
     PAGE_TIME_OUT = 15
@@ -77,6 +84,8 @@ class TinyCore:
     DEFAULT_TRUSTED_KEY_ELEMENT = "XPATH://body"
     SELENIUM_WEBELEMENT_TYPE = 'selenium.webdriver.remote.webelement.WebElement'
     DEFAULT_SCREEN_SHOT_PATH = 'C:/SS_Automation'
+
+    TEST_DOCUMENTS_PATH = 'C:/Automation/docx'
 
     def __init__(self, browser='chrome', viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
@@ -152,14 +161,13 @@ class TinyCore:
             WebDriverWait(self.driver, self.PAGE_TIME_OUT).until(ec.presence_of_element_located((by_string[0],
                                                                                                  by_string[1])))
             self.verbose_mode("The provided trusted key element <" + trusted_key_element + "> was found, so we can "
-                                                                                  "assume that the page has been "
-                                                                                  "loaded.")
+                                                                                           "assume that the page has been "
+                                                                                           "loaded.")
             return True
         except TimeoutException:
             self.verbose_mode("Timed out waiting for page to load, please check the provided trusted key element <"
                               + trusted_key_element + ">")
             return False
-
 
     def launch_site(self, base_url, anchor_locator_definition=DEFAULT_TRUSTED_KEY_ELEMENT):
         self.driver = self.set_webdriver()
@@ -233,7 +241,7 @@ class TinyCore:
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    def get_full_screenshot(self, screen_shot_title, main_content=DEFAULT_TRUSTED_KEY_ELEMENT):
+    def get_extended_screenshot(self, screen_shot_title, main_content=DEFAULT_TRUSTED_KEY_ELEMENT):
         # Where to save the picture
         # Video title
         gmt = time.gmtime()
@@ -252,6 +260,16 @@ class TinyCore:
             waste_some_time(2)
             # Take the screenshot
             elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
+            return f'{screen_shot_title}_{ts}.png'
+        except SystemError as err:
+            print('Take screenshot error at' + screen_shot_title)
+
+    def get_full_screenshot(self, screen_shot_title, main_content=DEFAULT_TRUSTED_KEY_ELEMENT):
+        try:
+            ts=get_time_stamp()
+            elem = self.get_element(main_content)
+            elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
+            return f'{screen_shot_title}_{ts}.png'
         except SystemError as err:
             print('Take screenshot error at' + screen_shot_title)
 
@@ -284,3 +302,15 @@ class TinyCore:
 
     def compare_element_inner_text(self, locator_definition, expected_text):
         return self.get_element_inner_text(locator_definition) == expected_text
+
+    @staticmethod
+    def create_test_doc():
+        return docx.Document()
+
+    def add_step_to_test_doc(self, doc_obj, step_definition, associated_screenshot=None):
+        doc_obj.add_paragraph(step_definition)
+        if associated_screenshot is not None:
+            doc_obj.add_picture(f"{self.DEFAULT_SCREEN_SHOT_PATH}/{associated_screenshot}", width=Inches(6))
+
+    def save_test_doc(self,doc_obj,  doc_name):
+        doc_obj.save(f"{self.TEST_DOCUMENTS_PATH}/{doc_name}_{get_time_stamp()}.docx")

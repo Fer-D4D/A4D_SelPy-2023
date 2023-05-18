@@ -24,7 +24,7 @@ mi_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install
 # Now that we have a way to interact with the browser we can launch it at the desired URL,
 # for this we use the native selenium method called "get()".
 
-mi_driver.get("https://www.saucedemo.com/f")
+mi_driver.get("https://www.saucedemo.com/")
 
 # Ok, chrome is launched and the desired site is visible, now we need to enter the required
 # credentials to login, so we need a way to interact with the required web elements,

@@ -1,7 +1,7 @@
 from core.Common_II import TinyCore
 
 
-class Selectors:
+class SelectorsDic:
     USER_NAME_FORM_FIELD = "ID:user-name"
     PASSWORD_FORM_FIELD = "ID:password"
     LOGIN_BUTTON = "ID:login-button"
@@ -13,7 +13,7 @@ class TestData:
 
 
 class LoginPage(TinyCore):
-    sd = Selectors()
+    sd = SelectorsDic()
     td = TestData()
 
     def __init__(self, driver, viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
@@ -25,7 +25,7 @@ class LoginPage(TinyCore):
         self.set_highlight_mode(highlight_mode)
 
     def do_login(self):
-        # self.set_driver(self.driver)
+        self.set_driver(self.driver)
         self.fill_input_text(self.sd.USER_NAME_FORM_FIELD, self.td.STANDARD_USER_NAME)
         self.fill_input_text(self.sd.PASSWORD_FORM_FIELD, self.td.GENERIC_PASSWORD)
         self.do_click(self.sd.LOGIN_BUTTON)
