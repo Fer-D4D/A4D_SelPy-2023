@@ -1,4 +1,4 @@
-from core.Common_II import TinyCore
+from Team.Fer.core.Common_II import TinyCore
 from Team.Fer.Sauce.landing_page import LandingPage
 from Team.Fer.Sauce.login_page import LoginPage
 from Team.Fer.Sauce.product_page import ProductPage
@@ -18,7 +18,7 @@ The product counter in the shopping cart should reflect the actions taken and be
 # Test Data
 TEST_URL = "https://www.saucedemo.com/"
 BROWSER = "chrome"
-VIEWER_MODE = "ON"  # Turning this ON add a small pause in between each test step
+VIEWER_MODE = "OFF"  # Turning this ON add a small pause in between each test step
 VERBOSE_MODE = "OFF"  # By turning this ON you will get some useful information about the test run
 HIGHLIGHT_MODE = "OFF"  # Turning this ON will highlight the element being used
 
@@ -42,6 +42,7 @@ if landing_page.check_for_login_granted():
     landing_page.add_step_to_test_doc(test_doc, "Step: As a standard user I can access the Sauce website",
                                       landing_page.get_full_screenshot("landing"))
     landing_page.add_item_to_shopping_cart("Sauce Labs Backpack")
+
     landing_page.add_step_to_test_doc(test_doc, "Step: The 'Sauce Labs backpack' item is added: ",
                                       landing_page.get_full_screenshot("Backpack"))
     landing_page.img_clicking("Test.allTheThings() T-Shirt (Red)")

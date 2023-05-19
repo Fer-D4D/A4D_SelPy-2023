@@ -1,4 +1,4 @@
-from core.Common_II import TinyCore
+from Team.Fer.core.Common_II import TinyCore
 
 
 class Selectors:
@@ -19,14 +19,14 @@ class LoginPage(TinyCore):
     def __init__(self, browser='chrome', viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
         super().__init__()
-        self.set
+        self.set_browser(browser)
         self.set_viewer_mode(viewer_mode)
         self.set_verbose_mode(verbose_mode)
         self.set_highlight_mode(highlight_mode)
 
-    def do_login(self):
+    def do_login(self, user_name=td.STANDARD_USER_NAME):
         # self.set_driver(self.driver)
-        self.fill_input_text(self.sd.USER_NAME_FORM_FIELD, self.td.STANDARD_USER_NAME)
+        self.fill_input_text(self.sd.USER_NAME_FORM_FIELD, user_name)
         self.fill_input_text(self.sd.PASSWORD_FORM_FIELD, self.td.GENERIC_PASSWORD)
         self.do_click(self.sd.LOGIN_BUTTON)
 
