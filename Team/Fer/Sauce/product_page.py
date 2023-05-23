@@ -18,7 +18,7 @@ class ProductPage(LandingPage):
     def __init__(self, driver, viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
         super().__init__(self.driver)
-        self.driver = driver
+        self.set_driver(driver)
         self.set_viewer_mode(viewer_mode)
         self.set_verbose_mode(verbose_mode)
         self.set_highlight_mode(highlight_mode)

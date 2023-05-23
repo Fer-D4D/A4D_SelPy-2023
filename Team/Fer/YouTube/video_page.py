@@ -1,20 +1,23 @@
-from Team.Fer.Sauce.Second_Challenge_Week_05.landing_page import LandingPage
+from Team.Fer.core.Common_II import TinyCore
 
 
 class Selectors:
-    THANK_YOU_MESSAGE = "CSS:.complete-header"
-    BACK_HOME_BUTTON = "ID:back-to-products"
+    VIDEO_TITLE_LINKS = "XPATH://div[@id='title']/H1"
 
 
-class CheckoutComplete(LandingPage):
+class TestData:
+    VIDEO_DESCRIPTION = "Python for Beginners - Learn Python in 1 Hour"
+
+
+class VideoPage(TinyCore):
 
     def __init__(self, driver, viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
-        super().__init__(driver)
+        super().__init__()
         self.set_driver(driver)
         self.set_viewer_mode(viewer_mode)
         self.set_verbose_mode(verbose_mode)
         self.set_highlight_mode(highlight_mode)
 
-    def confirm_order(self):
-        return self.safe_to_proceed(Selectors.THANK_YOU_MESSAGE)
+    def check_page(self):
+        self.wait_for_page_safe_load(Selectors.VIDEO_TITLE_LINKS)
