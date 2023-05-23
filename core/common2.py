@@ -92,12 +92,6 @@ class TinyCore:
     def set_viewer_mode(self, viewer_mode="Viewer-Mode-OFF"):
         self.VIEWER_MODE = map_to_boolean(viewer_mode)
 
-    def set_verbose_mode(self, verbose_mode="Verbose-Mode-OFF"):
-        self.VERBOSE_MODE = map_to_boolean(verbose_mode)
-
-    def set_highlight_mode(self, highlight_mode="Verbose-Mode-OFF"):
-        self.HIGHLIGHT_MODE = map_to_boolean(highlight_mode)
-
     def verbose_mode(self, verbose_msg):
         if self.VERBOSE_MODE:
             print(verbose_msg)
@@ -115,6 +109,7 @@ class TinyCore:
 
     def apply_style(self, element, style):
         self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);", element, style)
+
 
     def get_element(self, locator_definition):
         # self.viewer_mode()
@@ -146,27 +141,25 @@ class TinyCore:
             return webdriver.Chrome(service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()))
         return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-    def wait_for_page_safe_load(self, trusted_key_element=DEFAULT_TRUSTED_KEY_ELEMENT):
+    def is_page_load(self, trusted_key_element=DEFAULT_TRUSTED_KEY_ELEMENT):
         by_string = get_by_string(trusted_key_element)
         try:
             WebDriverWait(self.driver, self.PAGE_TIME_OUT).until(ec.presence_of_element_located((by_string[0],
                                                                                                  by_string[1])))
-            self.verbose_mode("The provided trusted key element <" + trusted_key_element + "> was found, so we can "
+        except TimeoutException:
+            self.verbose_mode("Timed out waiting for page to load, please check the trusted key element <"
+                              + trusted_key_element + "> provided")
+        finally:
+            self.verbose_mode("The trusted key element <" + trusted_key_element + "> provided was found, so we can "
                                                                                   "assume that the page has been "
                                                                                   "loaded.")
-            return True
-        except TimeoutException:
-            self.verbose_mode("Timed out waiting for page to load, please check the provided trusted key element <"
-                              + trusted_key_element + ">")
-            return False
-
 
     def launch_site(self, base_url, anchor_locator_definition=DEFAULT_TRUSTED_KEY_ELEMENT):
         self.driver = self.set_webdriver()
         self.driver.get(base_url)
         if self.VIEWER_MODE:
             self.driver.maximize_window()
-        self.wait_for_page_safe_load(anchor_locator_definition)
+        self.is_page_load(anchor_locator_definition)
         return self.driver
 
     def set_driver(self, driver):
@@ -281,6 +274,8 @@ class TinyCore:
 
     def get_number_of_elements(self, locator_definition):
         return len(self.get_elements_list(locator_definition))
-
-    def compare_element_inner_text(self, locator_definition, expected_text):
-        return self.get_element_inner_text(locator_definition) == expected_text
+    def get_text_from_element(self, locator_definition):
+        try:
+            return self.get_element(locator_definition).text
+        except NoSuchElementException:
+            pass

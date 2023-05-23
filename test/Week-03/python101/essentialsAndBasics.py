@@ -54,4 +54,4 @@ analizame(otra_lista)
 un_dictionario = {"uno":"eins", "dos":"zwei"}
 analizame(un_dictionario)
 
-
+print(una_lista[0:5])
