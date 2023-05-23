@@ -8,6 +8,8 @@ class SelectorsDic:
     DYNAMIC_ITEM_BUTTON = "XPATH://*[@id='$%$']"
     DYNAMIC_ITEM_IMG = "XPATH://img[@alt='$%$']"
     GENERIC_ITEM_DEFINITION = "CSS:.inventory_item_name"
+    BURGER_BUTTON = "ID:react-burger-menu-btn"
+    LOGOUT_LINK = "ID:logout_sidebar_link"
 
 
 class TestData:
@@ -89,3 +91,7 @@ class LandingPage(TinyCore):
     def proceed_to_your_cart_page(self):
         if self.safe_to_proceed(self.sd.SHOPPING_CART_ICON):
             self.do_click(self.sd.SHOPPING_CART_ICON)
+
+    def do_logout(self):
+        self.do_click(self.sd.BURGER_BUTTON)
+        self.do_click(self.sd.LOGOUT_LINK)

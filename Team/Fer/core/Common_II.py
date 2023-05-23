@@ -4,7 +4,7 @@ from functools import wraps
 
 import docx
 from Screenshot import Screenshot
-from docx.shared import Inches
+from docx.shared import Inches, Pt
 from selenium import webdriver
 from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException, \
     ElementNotVisibleException, ElementNotSelectableException
@@ -68,6 +68,12 @@ def get_time_stamp():
     return str(calendar.timegm(time.gmtime()))
 
 
+def boolean_mapper(boolean_input, value_for_true, value_for_false):
+    if boolean_input:
+        return value_for_true
+    return value_for_false
+
+
 class TinyCore:
     DRIVER = None
     BROWSER = 'chrome'
@@ -87,6 +93,10 @@ class TinyCore:
     DEFAULT_SCREEN_SHOT_PATH = 'C:/SS_Automation'
     TEST_STEP_COUNTER = 0
     DEFAULT_TEST_SS_NAME = "SS_test"
+    FLOW_CONTROL_FLAG = False
+    SS_FAIL_MODE = False
+    DOC_OBJECT = None
+    TEST_RUN = 0
 
     TEST_DOCUMENTS_PATH = 'C:/Automation/docx'
 
@@ -96,6 +106,7 @@ class TinyCore:
         self.VIEWER_MODE = map_to_boolean(viewer_mode)
         self.VERBOSE_MODE = map_to_boolean(verbose_mode)
         self.HIGHLIGHT_MODE = map_to_boolean(highlight_mode)
+        self.FLOW_CONTROL_FLAG = False
 
     def viewer_mode(self):
         if self.VIEWER_MODE:
@@ -113,8 +124,27 @@ class TinyCore:
     def set_highlight_mode(self, highlight_mode="Verbose-Mode-OFF"):
         self.HIGHLIGHT_MODE = map_to_boolean(highlight_mode)
 
+    def set_driver(self, driver):
+        self.DRIVER = driver
+
+    def get_driver(self):
+        return self.DRIVER
+
+    def update_flow_control_flag(self, boolean_state):
+        self.FLOW_CONTROL_FLAG = boolean_state
+
+    def set_ss_fail_mode(self, ss_fail_mode="SS-Fail-Mode-OFF"):
+        self.SS_FAIL_MODE = map_to_boolean(ss_fail_mode)
+
     def reset_step_counter(self):
         self.TEST_STEP_COUNTER = 0
+
+    def reset_test_run(self):
+        self.TEST_RUN = 0
+
+    def update_test_run(self):
+        self.TEST_RUN = self.TEST_RUN + 1
+        return self.TEST_RUN
 
     def verbose_mode(self, verbose_msg):
         if self.VERBOSE_MODE:
@@ -181,13 +211,9 @@ class TinyCore:
     def launch_site(self, base_url, anchor_locator_definition=DEFAULT_TRUSTED_KEY_ELEMENT):
         self.DRIVER = self.get_webdriver()
         self.DRIVER.get(base_url)
-        if self.VIEWER_MODE:
-            self.DRIVER.maximize_window()
+        self.DRIVER.maximize_window()
         self.wait_for_page_safe_load(anchor_locator_definition)
         return self.DRIVER
-
-    def set_driver(self, driver):
-        self.DRIVER = driver
 
     def go_to_element(self, web_element):
         if check_for_none_type(web_element):
@@ -302,6 +328,12 @@ class TinyCore:
         except SystemError as err:
             print('Take screenshot error at' + screen_shot_title)
 
+    def get_basic_screenshot(self, screen_shot_title=DEFAULT_TEST_SS_NAME):
+        ts = get_time_stamp()
+        name = f'{screen_shot_title}_{ts}.png'
+        self.DRIVER.save_screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{name}')
+        return name
+
     def get_elements_list(self, locator_definition):
         by_string = get_by_string(locator_definition)
         return self.DRIVER.find_elements(by_string[0], by_string[1])
@@ -316,12 +348,12 @@ class TinyCore:
         self.reset_step_counter()
         return docx.Document()
 
-    def add_step_to_test_doc(self, doc_obj, step_definition, associated_screenshot=None):
+    def add_step_to_test_doc(self, doc_obj, step_definition, associated_screenshot=None, last_step=False):
         self.TEST_STEP_COUNTER = self.TEST_STEP_COUNTER + 1
         doc_obj.add_heading(f"Step {self.TEST_STEP_COUNTER:02d}: {step_definition}")
         if associated_screenshot is not None:
             doc_obj.add_picture(f"{self.DEFAULT_SCREEN_SHOT_PATH}/{associated_screenshot}", width=Inches(6))
-        if self.TEST_STEP_COUNTER % 2 == 0:
+        if not last_step and self.TEST_STEP_COUNTER % 2 == 0:
             doc_obj.add_page_break()
 
     def save_test_doc(self, doc_obj, doc_name):
@@ -333,3 +365,39 @@ class TinyCore:
 
     def safe_to_proceed(self, key_locator_definition):
         return self.get_number_of_elements(key_locator_definition) > 0
+
+    def start_test_doc(self):
+        self.reset_step_counter()
+        self.DOC_OBJECT = docx.Document()
+
+    def add_cover_page(self, summary, env_details, tested_by):
+        style = self.DOC_OBJECT.styles['Normal']
+        font = style.font
+        font.name = 'Calibri'
+        font.size = Pt(18)
+
+        p = self.DOC_OBJECT.add_paragraph()
+        p.style = self.DOC_OBJECT.styles['Normal']
+        p.add_run("SUMMARY: ").bold = True
+        p.add_run(summary).italic = True
+        p = self.DOC_OBJECT.add_paragraph()
+        p.add_run("Environment: ").bold = True
+        p.add_run(env_details).italic = True
+        p = self.DOC_OBJECT.add_paragraph()
+        p.add_run("Tested By: ").bold = True
+        p.add_run(tested_by).italic = True
+        self.DOC_OBJECT.add_page_break()
+
+    def document_assert_results(self, boolean_result, assert_message, last_assert=False):
+        self.update_flow_control_flag(boolean_result)
+        self.TEST_STEP_COUNTER = self.TEST_STEP_COUNTER + 1
+        self.DOC_OBJECT.add_heading(f"Step {self.TEST_STEP_COUNTER:02d} - {assert_message}: "
+                                    f"{boolean_mapper(boolean_result, 'PASSED', 'FAILED')}")
+        if not self.SS_FAIL_MODE:
+            self.DOC_OBJECT.add_picture(f"{self.DEFAULT_SCREEN_SHOT_PATH}/"
+                                        f"{self.get_basic_screenshot()}", width=Inches(6))
+        if self.SS_FAIL_MODE and last_assert and self.TEST_STEP_COUNTER % 2 == 0:
+            self.DOC_OBJECT.add_page_break()
+
+    def save_doc_results(self, doc_name):
+        self.DOC_OBJECT.save(f"{self.TEST_DOCUMENTS_PATH}/{doc_name}_{get_time_stamp()}.docx")
