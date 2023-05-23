@@ -32,5 +32,5 @@ landing_page = LandingPage(global_driver, VIEWER_MODE, VERBOSE_MODE, HIGHLIGHT_M
 if landing_page.check_for_login_granted():
     print("Successful Login: Test Passed")
     landing_page.add_item_to_shopping_cart("Sauce Labs Backpack")
-    landing_page.add_item_to_shopping_cart("item_3_img_link")
+    landing_page.sele
     time.sleep(10)
