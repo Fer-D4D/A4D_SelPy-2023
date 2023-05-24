@@ -1,10 +1,10 @@
 import time
-import calendar;
-from functools import wraps
+import calendar
+from datetime import datetime
 
 import docx
-from Screenshot import Screenshot
 from docx.shared import Inches, Pt
+from openpyxl.reader.excel import load_workbook
 from selenium import webdriver
 from selenium.common import NoSuchElementException, InvalidSelectorException, TimeoutException, \
     ElementNotVisibleException, ElementNotSelectableException
@@ -74,6 +74,11 @@ def boolean_mapper(boolean_input, value_for_true, value_for_false):
     return value_for_false
 
 
+def get_current_date():
+    now = datetime.now()
+    return f"{now.month:02d}/{now.day:02d}/{now.year} {now.hour:02d}:{now.minute:02d}"
+
+
 class TinyCore:
     DRIVER = None
     BROWSER = 'chrome'
@@ -96,7 +101,9 @@ class TinyCore:
     FLOW_CONTROL_FLAG = False
     SS_FAIL_MODE = False
     DOC_OBJECT = None
+    XLSX_OBJ = None
     TEST_RUN = 0
+    GENERIC_FAIL_MESSAGE = "Test step failed, please check."
 
     TEST_DOCUMENTS_PATH = 'C:/Automation/docx'
 
@@ -141,6 +148,15 @@ class TinyCore:
 
     def reset_test_run(self):
         self.TEST_RUN = 0
+
+    def switch_flow_control_flag(self):
+        if self.get_flow_control_flag_status():
+            self.update_flow_control_flag(False)
+        else:
+            self.update_flow_control_flag(True)
+
+    def get_flow_control_flag_status(self):
+        return self.FLOW_CONTROL_FLAG
 
     def update_test_run(self):
         self.TEST_RUN = self.TEST_RUN + 1
@@ -200,7 +216,8 @@ class TinyCore:
             WebDriverWait(self.DRIVER, self.PAGE_TIME_OUT).until(ec.presence_of_element_located((by_string[0],
                                                                                                  by_string[1])))
             self.verbose_mode("The provided trusted key element <" + trusted_key_element + "> was found, so we can "
-                                                                                           "assume that the page has been "
+                                                                                           "assume that the page has "
+                                                                                           "been "
                                                                                            "loaded.")
             return True
         except TimeoutException:
@@ -296,7 +313,7 @@ class TinyCore:
             # Take the screenshot
             elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
             return f'{screen_shot_title}_{ts}.png'
-        except SystemError as err:
+        except SystemError:
             print('Take screenshot error at' + screen_shot_title)
 
     def get_full_screenshot(self, screen_shot_title=DEFAULT_TEST_SS_NAME, main_content=DEFAULT_TRUSTED_KEY_ELEMENT):
@@ -305,7 +322,7 @@ class TinyCore:
             elem = self.get_element(main_content)
             elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
             return f'{screen_shot_title}_{ts}.png'
-        except SystemError as err:
+        except SystemError:
             print('Take screenshot error at' + screen_shot_title)
 
     def get_emphasis_screenshot(self, screen_shot_title, locator_definition):
@@ -325,7 +342,7 @@ class TinyCore:
 
             # Take the screenshot
             elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
-        except SystemError as err:
+        except SystemError:
             print('Take screenshot error at' + screen_shot_title)
 
     def get_basic_screenshot(self, screen_shot_title=DEFAULT_TEST_SS_NAME):
@@ -370,7 +387,7 @@ class TinyCore:
         self.reset_step_counter()
         self.DOC_OBJECT = docx.Document()
 
-    def add_cover_page(self, summary, env_details, tested_by):
+    def add_cover_page_old(self, summary, env_details, tested_by):
         style = self.DOC_OBJECT.styles['Normal']
         font = style.font
         font.name = 'Calibri'
@@ -388,11 +405,32 @@ class TinyCore:
         p.add_run(tested_by).italic = True
         self.DOC_OBJECT.add_page_break()
 
-    def document_assert_results(self, boolean_result, assert_message, last_assert=False):
+    def add_cover_page(self, cover_item_list):
+        self.add_doc_style("Normal", "Calibri", 22)
+        for item, definition in cover_item_list.items():
+            self.add_paragraph_docx("Normal", item, definition.replace("%$%", get_current_date()), ": ")
+        self.DOC_OBJECT.add_page_break()
+
+    def add_doc_style(self, style_name, font_family, font_size):
+        font = self.DOC_OBJECT.styles[style_name].font
+        font.name = font_family
+        font.size = Pt(font_size)
+
+    def add_paragraph_docx(self, style, left_text="", right_text="", separator=""):
+        p = self.DOC_OBJECT.add_paragraph()
+        p.style = self.DOC_OBJECT.styles[style]
+        p.add_run(left_text + separator).bold = True
+        p.add_run(right_text).italic = True
+
+    def document_assert_results(self, boolean_result, assert_message, assert_failed_message=GENERIC_FAIL_MESSAGE,
+                                last_assert=False):
         self.update_flow_control_flag(boolean_result)
         self.TEST_STEP_COUNTER = self.TEST_STEP_COUNTER + 1
         self.DOC_OBJECT.add_heading(f"Step {self.TEST_STEP_COUNTER:02d} - {assert_message}: "
                                     f"{boolean_mapper(boolean_result, 'PASSED', 'FAILED')}")
+        if not boolean_result:
+            self.add_doc_style("Quote", "Calibri", 12)
+            self.add_paragraph_docx("Quote", "", f"Failure reason: {assert_failed_message}")
         if not self.SS_FAIL_MODE:
             self.DOC_OBJECT.add_picture(f"{self.DEFAULT_SCREEN_SHOT_PATH}/"
                                         f"{self.get_basic_screenshot()}", width=Inches(6))
@@ -401,3 +439,15 @@ class TinyCore:
 
     def save_doc_results(self, doc_name):
         self.DOC_OBJECT.save(f"{self.TEST_DOCUMENTS_PATH}/{doc_name}_{get_time_stamp()}.docx")
+
+    # openpixl fun
+
+    def open_xlsx(self, xlsx_file_name):
+        self.XLSX_OBJ = load_workbook(filename=xlsx_file_name)
+
+    def get_test_data_from_xlsx(self):
+        sheet = self.XLSX_OBJ.active
+        for row in sheet.iter_rows(min_row=1,
+                                   min_col=4,
+                                   max_col=7,
+                                   values_only=True):

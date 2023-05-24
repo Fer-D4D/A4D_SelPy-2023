@@ -5,6 +5,14 @@ class Selectors:
     USER_NAME_FORM_FIELD = "ID:user-name"
     PASSWORD_FORM_FIELD = "ID:password"
     LOGIN_BUTTON = "ID:login-button"
+    LANDING_PAGE_HEADER = "XPATH://div[text()='Swag Labs']"
+    SHOPPING_CART_ICON = "XPATH://div[@id='shopping_cart_container']/a"
+    SHOPPING_CART_COUNTER = "XPATH://div[@id='shopping_cart_container']//span"
+    DYNAMIC_ITEM_BUTTON = "XPATH://*[@id='$%$']"
+    DYNAMIC_ITEM_IMG = "XPATH://img[@alt='$%$']"
+    GENERIC_ITEM_DEFINITION = "CSS:.inventory_item_name"
+    BURGER_BUTTON = "ID:react-burger-menu-btn"
+    LOGOUT_LINK = "ID:logout_sidebar_link"
 
 
 class TestData:
@@ -37,8 +45,28 @@ class LoginPage(TinyCore):
         self.do_click(self.sd.LOGIN_BUTTON)
 
 
+class LandingPage(TinyCore):
+
+    def __init__(self, driver, viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
+                 highlight_mode="Highlight-Mode-OFF"):
+        super().__init__()
+        self.set_driver(driver)
+        self.set_viewer_mode(viewer_mode)
+        self.set_verbose_mode(verbose_mode)
+        self.set_highlight_mode(highlight_mode)
+
+    def check_for_login_granted(self):
+        return self.wait_for_page_safe_load(Selectors.SHOPPING_CART_ICON) and \
+               self.compare_element_inner_text(Selectors.LANDING_PAGE_HEADER, Selectors.LANDING_PAGE_HEADER)
+
+
 mi_login_page = LoginPage()
 
-mi_login_page.launch_site(TestData.TEST_URL)
+
+driver_global = mi_login_page.launch_site(TestData.TEST_URL)
+
+mi_landing_page = LandingPage(driver_global)
 
 mi_login_page.do_login()
+
+mi_landing_page.check_for_login_granted()

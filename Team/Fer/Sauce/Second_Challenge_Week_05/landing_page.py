@@ -13,7 +13,7 @@ class SelectorsDic:
 
 
 class TestData:
-    EXPECTED_TITTLE_TEXT = "Swag Labs"
+    EXPECTED_TITTLE_TEXT = "Swag Labs - Wrong"
     REPLACEMENT_TOKEN = "$%$"
 
 
@@ -38,6 +38,9 @@ class LandingPage(TinyCore):
     def check_for_login_granted(self):
         return self.wait_for_page_safe_load(self.sd.SHOPPING_CART_ICON) and \
                self.compare_element_inner_text(self.sd.LANDING_PAGE_HEADER, self.td.EXPECTED_TITTLE_TEXT)
+
+    def check_expected_condition(self, expected):
+        return self.compare_element_inner_text(self.sd.LANDING_PAGE_HEADER, expected)
 
     def gen_button_item_selector(self, item_description_text, add_button=True):
         main_text = item_description_text.replace(" ", "-").lower()
