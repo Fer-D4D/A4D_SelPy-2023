@@ -10,6 +10,7 @@ class SelectorsDic:
     GENERIC_ITEM_DEFINITION = "CSS:.inventory_item_name"
     BURGER_BUTTON = "ID:react-burger-menu-btn"
     LOGOUT_LINK = "ID:logout_sidebar_link"
+    RESET_PRODUCTS = "ID:reset_sidebar_link"
 
 
 class TestData:
@@ -76,7 +77,7 @@ class LandingPage(TinyCore):
 
     def add_items_to_shopping_cart_from_list(self, item_names_list):
         for item_name in item_names_list:
-            self.add_item_to_shopping_cart(item_name)
+            self.add_item_to_shopping_cart(item_name.strip())
 
     def remove_items_from_shopping_cart_from_list(self, item_names_list):
         for item_name in item_names_list:
@@ -96,5 +97,9 @@ class LandingPage(TinyCore):
             self.do_click(self.sd.SHOPPING_CART_ICON)
 
     def do_logout(self):
-        self.do_click(self.sd.BURGER_BUTTON)
+        self.reset_app_state()
         self.do_click(self.sd.LOGOUT_LINK)
+
+    def reset_app_state(self):
+        self.do_click(self.sd.BURGER_BUTTON)
+        self.do_click(self.sd.RESET_PRODUCTS)

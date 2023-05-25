@@ -1,5 +1,7 @@
+from Team.Fer.core.Common_II import TinyCore
+from Team.Fer.Sauce.Second_Challenge_Week_05.work_flows import workflow_mapper
 
-from Team.Fer.Sauce.Second_Challenge_Week_05.work_flows import full_flow_fast_product_addition, full_flow_long_product_addition
+utils = TinyCore()
+utils.open_xlsx("EZSauceTest.xlsx")
 
-# full_flow_fast_product_addition(["Sauce Labs Onesie", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"])
-# full_flow_long_product_addition(["Sauce Labs Onesie", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"])
+workflow_mapper(utils.get_test_data_from_xlsx())

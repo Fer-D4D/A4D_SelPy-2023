@@ -22,7 +22,7 @@ from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.support import expected_conditions as ec
 
 
-def waste_some_time(waiting_time=1):
+def waste_some_time(waiting_time=.1):
     time.sleep(waiting_time)
 
 
@@ -79,6 +79,12 @@ def get_current_date():
     return f"{now.month:02d}/{now.day:02d}/{now.year} {now.hour:02d}:{now.minute:02d}"
 
 
+def get_last_row(worksheet):
+    for row_num in range(1, worksheet.max_row):
+        if worksheet.cell(row=row_num, column=1).value is None:
+            return row_num
+
+
 class TinyCore:
     DRIVER = None
     BROWSER = 'chrome'
@@ -106,6 +112,7 @@ class TinyCore:
     GENERIC_FAIL_MESSAGE = "Test step failed, please check."
 
     TEST_DOCUMENTS_PATH = 'C:/Automation/docx'
+    TEST_DATA_PATH = 'C:/Automation/TestData'
 
     def __init__(self, browser='chrome', viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
@@ -408,7 +415,7 @@ class TinyCore:
     def add_cover_page(self, cover_item_list):
         self.add_doc_style("Normal", "Calibri", 22)
         for item, definition in cover_item_list.items():
-            self.add_paragraph_docx("Normal", item, definition.replace("%$%", get_current_date()), ": ")
+            self.add_paragraph_docx("Normal", item, definition.replace("URT", get_current_date()), ": ")
         self.DOC_OBJECT.add_page_break()
 
     def add_doc_style(self, style_name, font_family, font_size):
@@ -443,11 +450,43 @@ class TinyCore:
     # openpixl fun
 
     def open_xlsx(self, xlsx_file_name):
-        self.XLSX_OBJ = load_workbook(filename=xlsx_file_name)
+        print(f"{self.TEST_DATA_PATH}/{xlsx_file_name}")
+        self.XLSX_OBJ = load_workbook(filename=f"{self.TEST_DATA_PATH}/{xlsx_file_name}")
 
     def get_test_data_from_xlsx(self):
         sheet = self.XLSX_OBJ.active
+        first_row = True
+        test_data_rows = []
+        headers = None
         for row in sheet.iter_rows(min_row=1,
-                                   min_col=4,
-                                   max_col=7,
+                                   max_row=get_last_row(sheet),
+                                   max_col=8,
                                    values_only=True):
+            # print(row)
+            if first_row:
+                first_row = False
+                headers = row
+            else:
+                test_dic = {}
+                for iterator in range(0, len(headers)):
+                    test_dic.update({headers[iterator]: row[iterator]})
+                test_data_rows.append(test_dic)
+        return test_data_rows
+
+    def is_checkbox_checked(self, locator_definition):
+        return self.get_element(locator_definition).is_selected()
+
+    def check_checkbox(self, locator_definition):
+        if not self.is_checkbox_checked(locator_definition):
+            self.do_click(locator_definition)
+
+    def uncheck_checkbox(self, locator_definition):
+        if self.is_checkbox_checked(locator_definition):
+            self.do_click(locator_definition)
+
+    def compare_string_against_selector_text(self, locator_definition, string_to_compare):
+        return self.get_element_inner_text(locator_definition) == string_to_compare
+
+    @staticmethod
+    def compare_string_against_web_element_text(web_element, string_to_compare):
+        return web_element.text == string_to_compare

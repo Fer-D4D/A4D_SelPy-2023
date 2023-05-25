@@ -63,9 +63,19 @@ checkout_complete = CheckoutComplete(test_driver,
                                      Setup.HIGHLIGHT_MODE)
 
 
-def full_flow_fast_product_addition(item_list):
+def workflow_mapper(xlsx_data):
+    for test_data in xlsx_data:
+        if test_data['Workflow'] == "Full Flow Fast Product Addition":
+            full_flow_fast_product_addition(test_data["Test Data"].split(", "), test_data)
+        if test_data['Workflow'] == "Full Flow Long Product Addition":
+            full_flow_long_product_addition(test_data["Test Data"].split(", "), test_data)
+
+
+def full_flow_fast_product_addition(item_list, cover_details):
+    print(item_list)
+    print(cover_details)
     main_flow.start_test_doc()
-    main_flow.add_cover_page(Setup.COVER_ITEMS_DIC)
+    main_flow.add_cover_page(cover_details)
     login_page.fill_login_form()
     main_flow.document_assert_results(True, "User go Sauce site and enter credentials")
     login_page.proceed_landing_page()
@@ -102,12 +112,14 @@ def full_flow_fast_product_addition(item_list):
         main_flow.document_assert_results(checkout_complete.confirm_order(), 'The order is placed', True)
 
     checkout_complete.do_logout()
-    main_flow.save_doc_results(f"{Setup.COVER_ITEMS_DIC['Summary']}-Test Run_{main_flow.update_test_run():03d}")
+    main_flow.save_doc_results(f"{cover_details['Summary']}-Test Run_{main_flow.update_test_run():03d}")
 
 
-def full_flow_long_product_addition(item_list):
+def full_flow_long_product_addition(item_list, cover_details):
+    print(item_list)
+    print(cover_details)
     main_flow.start_test_doc()
-    main_flow.add_cover_page(Setup.COVER_ITEMS_DIC)
+    main_flow.add_cover_page(cover_details)
     login_page.fill_login_form()
     main_flow.document_assert_results(True, "User go Sauce site and enter credentials")
     login_page.proceed_landing_page()
@@ -148,4 +160,4 @@ def full_flow_long_product_addition(item_list):
         main_flow.document_assert_results(checkout_complete.confirm_order(), 'The order is placed', True)
 
     checkout_complete.do_logout()
-    main_flow.save_doc_results(f"{Setup.COVER_ITEMS_DIC['Summary']}-Test Run_{main_flow.update_test_run():03d}")
+    main_flow.save_doc_results(f"{cover_details['Summary']}-Test Run_{main_flow.update_test_run():03d}")
