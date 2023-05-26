@@ -1,5 +1,5 @@
 from core.common2 import TinyCore
-from core.sauce_test import LoginPage, ResultsPage, AddProducts
+from core.sauce_test import LoginInto, ResultsPage, AddProducts, Locators, TestData
 
 
 # Test Data
@@ -12,24 +12,23 @@ HIGHLIGHT_MODE = "OFF"  # Turning this ON will highlight the element being used
 
 # Test Elements
 
-loginpagenew = LoginPage()
+loginpagenew = LoginInto()
+localizadores = Locators()
+testdata = TestData()
 pageresults = ResultsPage()
 addproductcar = AddProducts()
 
 # Test Actions
 # First use below line to initialize our super framework
 letsAutomate = TinyCore(BROWSER, VIEWER_MODE, VERBOSE_MODE, HIGHLIGHT_MODE)
-letsAutomate.launch_site(TEST_URL, loginpagenew.SEARCH_USERNAME_TEXT)
+letsAutomate.launch_site(TEST_URL, localizadores.SEARCH_USERNAME_TEXT)
 
-search_text_name = "standard_user"
-search_text_password = "secret_sauce"
-
-letsAutomate.fill_input_text(loginpagenew.get_username_text(), search_text_name)
+letsAutomate.fill_input_text(localizadores.SEARCH_USERNAME_TEXT, testdata.search_text_name)
 # What do we have here?! yup this is new, screenshots!!!
-letsAutomate.get_emphasis_screenshot(search_text_name + "-A", loginpagenew.get_username_text())
-letsAutomate.fill_input_text(loginpagenew.get_password_text(), search_text_password)
+#letsAutomate.get_emphasis_screenshot(search_text_name + "-A", loginpagenew.get_username_text())
+letsAutomate.fill_input_text(localizadores.SEARCH_PASSWORD_TEXT, testdata.search_text_password)
 #letsAutomate.get_emphasis_screenshot(search_text_password + "-B", loginpagenew.get_password_text())
-letsAutomate.do_click(loginpagenew.get_submit_text())
+letsAutomate.do_click(localizadores.SEARCH_BUTTON)
 print(pageresults.get_result_text())
 letsAutomate.do_click(addproductcar.ADD_FIRST_ITEM)
 letsAutomate.do_click(addproductcar.ADD_SECOND_ITEM)
