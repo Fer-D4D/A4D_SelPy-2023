@@ -13,6 +13,7 @@ class Locators:
     SEARCH_USERNAME_TEXT = "CSS:#user-name"
     SEARCH_PASSWORD_TEXT = "CSS:#password"
     SEARCH_BUTTON = "CSS:.submit-button.btn_action"
+
 class LoginPage(TinyCore):
     def __init__(self, search_text_name = "standard_user", search_text_password = "secret_sauce", SEARCH_USERNAME_TEXT = "CSS:#user-name",
     SEARCH_PASSWORD_TEXT = "CSS:#password", SEARCH_BUTTON = "CSS:.submit-button.btn_action" ):
@@ -23,11 +24,10 @@ class LoginPage(TinyCore):
         self.inputbutton = SEARCH_BUTTON
 
     def do_login(self):
-        self.fill_input_text(self.inputusername, self.username)
-        self.fill_input_text(self.inputpassword, self.password)
-        self.do_click(self.inputbutton)
-
-class AddProducts:
+        TinyCore.fill_input_text(self.inputusername, self.username)
+        TinyCore.fill_input_text(self.inputpassword, self.password)
+        TinyCore.do_click(self, self.inputbutton)
+class AddProducts(TinyCore):
     ADD_FIRST_ITEM = "CSS:#add-to-cart-sauce-labs-backpack"
     ADD_SECOND_ITEM = "CSS:#add-to-cart-sauce-labs-fleece-jacket"
     ADD_THIRD_ITEM = "CSS:#add-to-cart-sauce-labs-onesie"
@@ -54,6 +54,15 @@ class AddProducts:
     VIEW_RESULT_PRINT7 = "XPATH://div[@class='summary_info']/child::div[7]"
     VIEW_RESULT_PRINT8 = "XPATH://div[@class='summary_info']/child::div[8]"
 
+    def print_content(self):
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT1)),
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT2)),
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT3)),
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT4)),
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT5)),
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT6)),
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT7)),
+        print(TinyCore.get_text_from_element(AddProducts.VIEW_RESULT_PRINT8))
     def add_items_car(self):
         return self.ADD_FIRST_ITEM, self.ADD_SECOND_ITEM, self.ADD_THIRD_ITEM
     def viewcar_items(self):
@@ -65,7 +74,7 @@ class AddProducts:
     def add_shirtitem(self):
         return self.IMAGE_SHIRT_ITEM
 
-class ResultsPage:
+class ResultsPage():
     FIRST_RESULT_TITTLE_SPAN = "Ha iniciado sesión exitosamente"
     PRODUCT_ADDED = "Your product were added"
     def get_result_text(self):
