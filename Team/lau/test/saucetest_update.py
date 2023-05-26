@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 from core.sauce_updated import delay_time
+from core.sauce_updated import find_element_by_css
+from core.sauce_updated import find_element_by_id
 
 mi_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
@@ -52,7 +54,7 @@ mi_driver.get("https://www.saucedemo.com/")
 #opening_image = mi_driver.find_element(By.ID, "item_3_img_link")
 
 # Find username input field
-username_input = mi_driver.find_element(By.CSS_SELECTOR, SEARCH_USERNAME_TEXT)
+username_input = find_element_by_css(mi_driver, SEARCH_USERNAME_TEXT)
 username_input.send_keys("standard_user")
 delay_time(2)
 # Find password input field
@@ -68,7 +70,7 @@ adding_first_item = mi_driver.find_element(By.CSS_SELECTOR, ADD_FIRST_ITEM)
 adding_first_item.click()
 delay_time(2)
 #click on the product image called "Test.allTheThings() T-Shirt (Red)"
-opening_image = mi_driver.find_element(By.ID, "item_3_img_link")
+opening_image = find_element_by_id(mi_driver, "item_3_img_link")
 opening_image.click()
 delay_time(2)
 #add T-Shirt (Red) to the cart
