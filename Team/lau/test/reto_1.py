@@ -7,7 +7,7 @@
 #Expected Results:
 #The product counter in the shopping cart should reflect the actions taken and be equal to 1.
 from core.common2 import TinyCore
-from core.sauce_test import TestData, Locators, LoginInto, ResultsPage, AddProducts
+from core.sauce_test import TestData, Locators, ResultsPage, AddProducts, LoginPage
 
 
 # Test Data
@@ -18,25 +18,25 @@ VIEWER_MODE = "ON"  # Turning this ON add a small pause in between each test ste
 VERBOSE_MODE = "OFF"  # By turning this ON you will get some useful information about the test run
 HIGHLIGHT_MODE = "OFF"  # Turning this ON will highlight the element being used
 
-loginpagenew = LoginInto()
 localizadores = Locators()
 testdata = TestData()
 pageresults = ResultsPage()
 addproductcar = AddProducts()
+loginpage = LoginPage()
 
 # Test Actions
 # First use below line to initialize our super framework
 letsAutomate = TinyCore(BROWSER, VIEWER_MODE, VERBOSE_MODE, HIGHLIGHT_MODE)
 letsAutomate.launch_site(TEST_URL, localizadores.SEARCH_USERNAME_TEXT)
 
-letsAutomate.fill_input_text(localizadores.SEARCH_USERNAME_TEXT, testdata.search_text_name)
+#letsAutomate.fill_input_text(localizadores.SEARCH_USERNAME_TEXT, testdata.search_text_name)
 # What do we have here?! yup this is new, screenshots!!!
 #letsAutomate.get_emphasis_screenshot(search_text_name + "-A", loginpagenew.get_username_text())
-letsAutomate.fill_input_text(localizadores.SEARCH_PASSWORD_TEXT, testdata.search_text_password)
+#letsAutomate.fill_input_text(localizadores.SEARCH_PASSWORD_TEXT, testdata.search_text_password)
 #letsAutomate.get_emphasis_screenshot(search_text_password + "-B", loginpagenew.get_password_text())
-letsAutomate.do_click(localizadores.SEARCH_BUTTON)
+#letsAutomate.do_click(localizadores.SEARCH_BUTTON)
 
-
+loginpage.do_login()
 # What do we have here?! yup this is new, screenshots!!!
 #letsAutomate.get_emphasis_screenshot(search_text_name + "-A", loginpagenew.get_username_text())
 #letsAutomate.get_emphasis_screenshot(search_text_password + "-B", loginpagenew.get_password_text())

@@ -1,4 +1,8 @@
 from core.common2 import TinyCore
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 class TestData:
     search_text_name = "standard_user"
     search_text_password = "secret_sauce"
@@ -9,23 +13,19 @@ class Locators:
     SEARCH_USERNAME_TEXT = "CSS:#user-name"
     SEARCH_PASSWORD_TEXT = "CSS:#password"
     SEARCH_BUTTON = "CSS:.submit-button.btn_action"
-
-class LoginInto(TinyCore):
-
-    #def __init__(self, SEARCH_USERNAME_TEXT = "CSS:#user-name", SEARCH_PASSWORD_TEXT = "CSS:#password",
-                # SEARCH_BUTTON = "CSS:.submit-button.btn_action", search_text_name = "standard_user", search_text_password = "secret_sauce"):
-        #super().__init__()
-        #self.set_search_name(SEARCH_USERNAME_TEXT)
-        #self.set_search_password(SEARCH_PASSWORD_TEXT)
-        #self.set_search_button(SEARCH_BUTTON)
-        #self.set_text_name(search_text_name)
-        #self.set_text_password(search_text_password)
+class LoginPage(TinyCore):
+    def __init__(self, search_text_name = "standard_user", search_text_password = "secret_sauce", SEARCH_USERNAME_TEXT = "CSS:#user-name",
+    SEARCH_PASSWORD_TEXT = "CSS:#password", SEARCH_BUTTON = "CSS:.submit-button.btn_action" ):
+        self.username = search_text_name
+        self.password = search_text_password
+        self.inputusername = SEARCH_USERNAME_TEXT
+        self.inputpassword = SEARCH_PASSWORD_TEXT
+        self.inputbutton = SEARCH_BUTTON
 
     def do_login(self):
-        # self.set_driver(self.driver)
-        self.fill_input_text(Locators.SEARCH_USERNAME_TEXT, TestData.search_text_name)
-        self.fill_input_text(Locators.SEARCH_PASSWORD_TEXT, TestData.search_text_password)
-        self.do_click(Locators.SEARCH_BUTTON)
+        self.fill_input_text(self.inputusername, self.username)
+        self.fill_input_text(self.inputpassword, self.password)
+        self.do_click(self.inputbutton)
 
 class AddProducts:
     ADD_FIRST_ITEM = "CSS:#add-to-cart-sauce-labs-backpack"
