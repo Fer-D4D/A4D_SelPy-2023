@@ -6,11 +6,8 @@ import time
 
 mi_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-SEARCH_USERNAME_TEXT = "#user-name"
-SEARCH_PASSWORD_TEXT = "#password"
-SEARCH_BUTTON = ".submit-button.btn_action"
-search_text_name = "standard_user"
-search_text_password = "secret_sauce"
+def launch_site(driver,base_url):
+    driver.get(base_url)
 
 def delay_time(waiting_time_value):
     time.sleep(waiting_time_value)

@@ -6,6 +6,8 @@ import time
 from core.sauce_updated import delay_time
 from core.sauce_updated import find_element_by_css
 from core.sauce_updated import find_element_by_id
+from core.sauce_updated import launch_site
+from core.sauce_updated import fill_input_text
 
 mi_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
@@ -48,7 +50,9 @@ checkout_zip = "044510"
 
 
 #Inicio
-mi_driver.get("https://www.saucedemo.com/")
+#mi_driver.get("https://www.saucedemo.com/")
+
+Open_site = launch_site(mi_driver, "https://www.saucedemo.com/")
 mi_driver.set_window_size(1440, 1102)
 #FIND ELEMENT CSS: username_input = mi_driver.find_element(By.CSS_SELECTOR, "#user-name")
 #FIND ELEMENT XPATH: add_shirt_cart = mi_driver.find_element(By.XPATH, "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']")
@@ -56,7 +60,6 @@ mi_driver.set_window_size(1440, 1102)
 #GET TEXT FROM AN ELEMENT:shirt_information = mi_driver.find_element(By.XPATH, "//a[@id='item_3_title_link']//div[@class='inventory_item_name']").text
 #DELAY:delay_time(2)
 #BACK TO PREVIUS PAGE: mi_driver.back()
-
 
 # Find username input field
 username_input = find_element_by_css(mi_driver, SEARCH_USERNAME_TEXT)
