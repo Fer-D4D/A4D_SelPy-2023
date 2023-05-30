@@ -26,6 +26,7 @@ VIEW_RESULT_PRICE = "XPATH://*[@id='cart_contents_container']/div/div[1]/div[3]/
 IMAGE_FIRST_ITEM = "XPATH://div[@class='inventory_item_img']//a[@id='item_4_img_link']/child::img"
 IMAGE_SHIRT_ITEM = "XPATH://div[@class='inventory_item_img']//a[@id='item_3_img_link']/child::img"
 IMAGE_SHIRT_ITEM_ID = "item_3_img_link"
+TITLE_SHIRT = "//a[@id='item_3_title_link']//div[@class='inventory_item_name']"
 BACK_BUTTON = "XPATH://button[@id='back-to-products']"
 REMOVE_FIRST_ITEM = "CSS:#remove-sauce-labs-backpack"
 CHECKOUT_BUTTON = "XPATH://button[@id='checkout']"
@@ -48,19 +49,23 @@ checkout_zip = "044510"
 
 #Inicio
 mi_driver.get("https://www.saucedemo.com/")
+mi_driver.set_window_size(1440, 1102)
+#FIND ELEMENT CSS: username_input = mi_driver.find_element(By.CSS_SELECTOR, "#user-name")
+#FIND ELEMENT XPATH: add_shirt_cart = mi_driver.find_element(By.XPATH, "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']")
+#FIND ELEMENT ID: opening_image = mi_driver.find_element(By.ID, "item_3_img_link")
+#GET TEXT FROM AN ELEMENT:shirt_information = mi_driver.find_element(By.XPATH, "//a[@id='item_3_title_link']//div[@class='inventory_item_name']").text
+#DELAY:delay_time(2)
+#BACK TO PREVIUS PAGE: mi_driver.back()
 
-#username_input = mi_driver.find_element(By.CSS_SELECTOR, "#user-name")
-#add_shirt_cart = mi_driver.find_element(By.XPATH, "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']")
-#opening_image = mi_driver.find_element(By.ID, "item_3_img_link")
 
 # Find username input field
 username_input = find_element_by_css(mi_driver, SEARCH_USERNAME_TEXT)
 username_input.send_keys("standard_user")
-delay_time(2)
+
 # Find password input field
 password_input = mi_driver.find_element(By.CSS_SELECTOR, SEARCH_PASSWORD_TEXT)
 password_input.send_keys("secret_sauce")
-delay_time(2)
+
 # Find submit button
 submit_button_input = mi_driver.find_element(By.CSS_SELECTOR, ".submit-button.btn_action")
 submit_button_input.click()
@@ -68,12 +73,45 @@ delay_time(2)
 #add the "Sauce Labs backpack"
 adding_first_item = mi_driver.find_element(By.CSS_SELECTOR, ADD_FIRST_ITEM)
 adding_first_item.click()
-delay_time(2)
+
 #click on the product image called "Test.allTheThings() T-Shirt (Red)"
 opening_image = find_element_by_id(mi_driver, "item_3_img_link")
 opening_image.click()
-delay_time(2)
+
 #add T-Shirt (Red) to the cart
 add_shirt_cart = mi_driver.find_element(By.XPATH, "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']")
 add_shirt_cart.click()
-delay_time(2)
+
+#backpage
+mi_driver.back()
+#remove backpack
+remove_pack = mi_driver.find_element(By.CSS_SELECTOR, "#remove-sauce-labs-backpack")
+remove_pack.click()
+
+#Go to the cart
+go_to_cart = mi_driver.find_element(By.XPATH, "//a[@class='shopping_cart_link']")
+go_to_cart.click()
+
+#print shirt info
+shirt_information = mi_driver.find_element(By.XPATH, "//a[@id='item_3_title_link']//div[@class='inventory_item_name']").text
+shirt_description = mi_driver.find_element(By.XPATH, "//div[@class='cart_item_label']//div[@class='inventory_item_desc']").text
+shirt_price = mi_driver.find_element(By.XPATH, "//div[@class='item_pricebar']//div[@class='inventory_item_price']").text
+print("Response text:", shirt_information, shirt_description, shirt_price)
+
+delay_time(3)
+#checkout button
+
+checkout_product = mi_driver.find_element(By.XPATH, "//button[@id='checkout']").click()
+
+#fill checkout
+
+fill_checkout_name = mi_driver.find_element(By.XPATH, "//input[@id='first-name']")
+fill_checkout_name.send_keys("Laura")
+fill_checkout_lastname = mi_driver.find_element(By.XPATH, "//input[@id='last-name']")
+fill_checkout_lastname.send_keys("Curtidor")
+fill_checkout_zip = mi_driver.find_element(By.XPATH, "//input[@id='postal-code']")
+fill_checkout_zip.send_keys("044510")
+checkout_button = mi_driver.find_element(By.XPATH, "//input[@id='continue']").click()
+
+total_price = mi_driver.find_element(By.XPATH, "//div[@class='summary_info']/child::div[8]").text
+print("Response text:", total_price)
