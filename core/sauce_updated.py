@@ -5,7 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 from selenium.common import NoSuchElementException
 
-mi_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+#mi_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 def launch_site(driver,base_url):
     driver.get(base_url)

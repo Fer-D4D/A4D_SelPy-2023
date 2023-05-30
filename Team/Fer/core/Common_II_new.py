@@ -21,20 +21,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.support import expected_conditions as ec
 
-
-def waste_some_time(waiting_time=.1):
-    time.sleep(waiting_time)
-
-
-def timer(f):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = f(*args, **kwargs)
-        stop_time = time.time()
-        dt = stop_time - start_time
-        print(f"Δt = {dt}")
-
-    return wrapper
+from Team.Fer.core.utils import Utils, timer
 
 
 def get_by_string(locator_definition):
@@ -85,35 +72,37 @@ def get_last_row(worksheet):
             return row_num
 
 
-class TinyCore:
+class TinyCore(Utils):
     DRIVER = None
     BROWSER = 'chrome'
     PAGE_TIME_OUT = 15
-    FLUENT_WAIT_TIMEOUT = 3
+    FLUENT_WAIT_TIMEOUT = 5
     FLUENT_WAIT_FREQ = 1
     DEFAULT_TIME_TO_WASTE = 1
-    HIGHLIGHT_COLOR = "red"
-    HIGHLIGHT_BORDER = 4
-    HIGHLIGHT_DURATION = 1
+
     VIEWER_MODE = False
     VIEWER_MODE_TIME = 1
     VERBOSE_MODE = False
     HIGHLIGHT_MODE = False
-    DEFAULT_TRUSTED_KEY_ELEMENT = "XPATH://body"
-    SELENIUM_WEB_ELEMENT_TYPE = 'selenium.webdriver.remote.webelement.WebElement'
-    DEFAULT_SCREEN_SHOT_PATH = 'C:/SS_Automation'
+
     TEST_STEP_COUNTER = 0
-    DEFAULT_TEST_SS_NAME = "SS_test"
+
     FLOW_CONTROL_FLAG = False
     SS_FAIL_MODE = False
     DOC_OBJECT = None
     XLSX_OBJ = None
     TEST_RUN = 0
-    GENERIC_TOKEN = "%$%"
-    GENERIC_FAIL_MESSAGE = "Test step failed, please check."
 
     TEST_DOCUMENTS_PATH = 'C:/Automation/docx'
     TEST_DATA_PATH = 'C:/Automation/TestData'
+    DEFAULT_SCREEN_SHOT_PATH = 'C:/SS_Automation'
+    DEFAULT_TRUSTED_KEY_SELECTOR = "XPATH://body"
+    DEFAULT_TEST_SS_NAME = "SS_test"
+    GENERIC_FAIL_MESSAGE = "Test step failed, please check."
+
+    HIGHLIGHT_COLOR = "red"
+    HIGHLIGHT_BORDER = 4
+    HIGHLIGHT_DURATION = 1
 
     def __init__(self, browser='chrome', viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
@@ -121,11 +110,68 @@ class TinyCore:
         self.VIEWER_MODE = map_to_boolean(viewer_mode)
         self.VERBOSE_MODE = map_to_boolean(verbose_mode)
         self.HIGHLIGHT_MODE = map_to_boolean(highlight_mode)
-        self.FLOW_CONTROL_FLAG = False
+
+    def define_webdriver(self):
+        if self.BROWSER == "edge":
+            return webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+        if self.BROWSER == "firefox":
+            return webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+        if self.BROWSER == "brave":
+            return webdriver.Chrome(service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()))
+        return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+
+    def start_driver(self):
+        self.DRIVER = self.define_webdriver()
+
+    def get_driver(self):
+        return self.DRIVER
+
+    @timer
+    def launch_site(self, base_url, trusted_key_selector=DEFAULT_TRUSTED_KEY_SELECTOR, dynamic_selector_text=""):
+        self.DRIVER = self.define_webdriver()
+        self.DRIVER.get(base_url)
+        self.DRIVER.maximize_window()
+        self.is_page_ready(trusted_key_selector, dynamic_selector_text)
+
+    def get_element(self, selector_definition, dynamic_selector_text="", waiting_time=FLUENT_WAIT_TIMEOUT):
+        wait = WebDriverWait(self.DRIVER, waiting_time, poll_frequency=self.FLUENT_WAIT_FREQ,
+                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+        by_string = self.create_required_bystring(selector_definition, dynamic_selector_text)
+        try:
+            element = wait.until(ec.element_to_be_clickable((by_string["By"], by_string["custom_selector"])))
+            self.highlight_mode(element)
+            self.verbose_mode("<" + selector_definition + "> Selector found!")
+            return element
+        except NoSuchElementException:
+            self.verbose_mode("<" + selector_definition + "> Selector not found, please check it out")
+            return None
+        except InvalidSelectorException:
+            self.verbose_mode("<" + selector_definition + "> Selector is invalid please check it out.")
+            return None
+        except TimeoutException:
+            self.verbose_mode("<" + selector_definition + "> Selector not found, please check it out")
+            return None
+
+    def is_page_ready(self, trusted_key_selector=DEFAULT_TRUSTED_KEY_SELECTOR, dynamic_selector_text=""):
+        print(self.validate_object(self.DRIVER))
+        print(self.create_required_bystring(trusted_key_selector, dynamic_selector_text,
+                                            self.PAGE_TIME_OUT))
+        if self.validate_object(self.DRIVER) and self.validate_object(
+                self.get_element(self.create_required_bystring(trusted_key_selector), dynamic_selector_text,
+                                 self.PAGE_TIME_OUT)):
+            self.verbose_mode("The provided trusted key element <" + trusted_key_selector + "> was found, so we can "
+                                                                                            "assume that the page has "
+                                                                                            "been "
+                                                                                            "loaded.")
+            return True
+        else:
+            self.verbose_mode("Timed out waiting for page to load, please check the provided trusted key element <"
+                              + trusted_key_selector + ">")
+            return False
 
     def viewer_mode(self):
         if self.VIEWER_MODE:
-            waste_some_time(self.VIEWER_MODE_TIME)
+            self.waste_some_time(self.VIEWER_MODE_TIME)
 
     def set_viewer_mode(self, viewer_mode="Viewer-Mode-OFF"):
         self.VIEWER_MODE = map_to_boolean(viewer_mode)
@@ -141,9 +187,6 @@ class TinyCore:
 
     def set_driver(self, driver):
         self.DRIVER = driver
-
-    def get_driver(self):
-        return self.DRIVER
 
     def update_flow_control_flag(self, boolean_state):
         self.FLOW_CONTROL_FLAG = boolean_state
@@ -187,58 +230,6 @@ class TinyCore:
 
     def apply_style(self, element, style):
         self.DRIVER.execute_script("arguments[0].setAttribute('style', arguments[1]);", element, style)
-
-    def get_element(self, locator_definition):
-        # self.viewer_mode()
-        wait = WebDriverWait(self.DRIVER, self.FLUENT_WAIT_TIMEOUT, poll_frequency=self.FLUENT_WAIT_FREQ,
-                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
-        by_string = get_by_string(locator_definition)
-        try:
-            # element = self.driver.find_element(by_string[0], by_string[1])
-            element = wait.until(ec.element_to_be_clickable((by_string[0], by_string[1])))
-            self.highlight_mode(element)
-            self.verbose_mode("<" + locator_definition + "> Selector found!")
-            return element
-        except NoSuchElementException:
-            self.verbose_mode("<" + locator_definition + "> Selector not found, please check it out")
-            return None
-        except InvalidSelectorException:
-            self.verbose_mode("<" + locator_definition + "> Selector is invalid please check it out.")
-            return None
-        except TimeoutException:
-            self.verbose_mode("<" + locator_definition + "> Selector not found, please check it out")
-            return None
-
-    def get_webdriver(self):
-        if self.BROWSER == "edge":
-            return webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
-        if self.BROWSER == "firefox":
-            return webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
-        if self.BROWSER == "brave":
-            return webdriver.Chrome(service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()))
-        return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-
-    def wait_for_page_safe_load(self, trusted_key_element=DEFAULT_TRUSTED_KEY_ELEMENT):
-        by_string = get_by_string(trusted_key_element)
-        try:
-            WebDriverWait(self.DRIVER, self.PAGE_TIME_OUT).until(ec.presence_of_element_located((by_string[0],
-                                                                                                 by_string[1])))
-            self.verbose_mode("The provided trusted key element <" + trusted_key_element + "> was found, so we can "
-                                                                                           "assume that the page has "
-                                                                                           "been "
-                                                                                           "loaded.")
-            return True
-        except TimeoutException:
-            self.verbose_mode("Timed out waiting for page to load, please check the provided trusted key element <"
-                              + trusted_key_element + ">")
-            return False
-
-    def launch_site(self, base_url, anchor_locator_definition=DEFAULT_TRUSTED_KEY_ELEMENT):
-        self.DRIVER = self.get_webdriver()
-        self.DRIVER.get(base_url)
-        self.DRIVER.maximize_window()
-        self.wait_for_page_safe_load(anchor_locator_definition)
-        return self.DRIVER
 
     def go_to_element(self, web_element):
         if check_for_none_type(web_element):
@@ -301,7 +292,7 @@ class TinyCore:
         self.DRIVER.close()
         self.DRIVER.switch_to.window(windows[0])
 
-    def get_extended_screenshot(self, screen_shot_title, main_content=DEFAULT_TRUSTED_KEY_ELEMENT):
+    def get_extended_screenshot(self, screen_shot_title, main_content=DEFAULT_TRUSTED_KEY_SELECTOR):
         # Where to save the picture
         # Video title
         gmt = time.gmtime()
@@ -317,14 +308,14 @@ class TinyCore:
             # The width is hardcoded because the screensize is fixed for each computer
             self.DRIVER.set_window_size(1920, total_height)
             # Wait for 2 seconds
-            waste_some_time(2)
+            self.waste_some_time(2)
             # Take the screenshot
             elem.screenshot(f'{self.DEFAULT_SCREEN_SHOT_PATH}/{screen_shot_title}_{ts}.png')
             return f'{screen_shot_title}_{ts}.png'
         except SystemError:
             print('Take screenshot error at' + screen_shot_title)
 
-    def get_full_screenshot(self, screen_shot_title=DEFAULT_TEST_SS_NAME, main_content=DEFAULT_TRUSTED_KEY_ELEMENT):
+    def get_full_screenshot(self, screen_shot_title=DEFAULT_TEST_SS_NAME, main_content=DEFAULT_TRUSTED_KEY_SELECTOR):
         try:
             ts = get_time_stamp()
             elem = self.get_element(main_content)
@@ -337,7 +328,7 @@ class TinyCore:
         gmt = time.gmtime()
         ts = calendar.timegm(gmt)
         try:
-            elem = self.get_element(self.DEFAULT_TRUSTED_KEY_ELEMENT)
+            elem = self.get_element(self.DEFAULT_TRUSTED_KEY_SELECTOR)
 
             # Get the height of the element, and adding some height just to be sage
             total_height = elem.size['height'] + 1000
@@ -493,4 +484,3 @@ class TinyCore:
 
     def token_replace(self, locator_definition, new_value):
         return locator_definition.replace(self.GENERIC_TOKEN, new_value)
-
