@@ -4,7 +4,17 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
+
+def do_login_external(page_obj, driver, *args):
+    print(args)
+    print(driver)
+    print(page_obj)
+    page_obj.fill_text_to_element(driver, args[0], args[1], args[2])
+    page_obj.fill_text_to_element(driver, args[3], args[4], args[5])
+    page_obj.do_click(driver, args[6], args[7])
+
 class Page:
+
 
     @staticmethod
     def set_driver():
@@ -30,6 +40,10 @@ class Page:
     def do_click(driver, by_locator, locator):
         return driver.find_element(by_locator, locator).click()
 
-
-
+    def do_login(self, driver, *args):
+        print(args)
+        self.fill_text_to_element(driver, args[0], args[1], args[2])
+        self.fill_text_to_element(driver, args[3], args[4], args[5])
+        self.do_click(driver, args[6], args[7])
+0
 

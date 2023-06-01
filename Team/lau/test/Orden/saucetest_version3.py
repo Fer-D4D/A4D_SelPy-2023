@@ -1,12 +1,5 @@
-from selenium.webdriver.common.by import By
-from core.sauce_test_version2 import Page, do_login_external
-
-SEARCH_USERNAME_TEXT = "#user-name"
-SEARCH_PASSWORD_TEXT = "#password"
-SEARCH_BUTTON = ".submit-button.btn_action"
-search_text_name = "standard_user"
-search_text_password = "secret_sauce"
-
+from Team.lau.test.Orden.sauce_login_page import LoginPage
+from Team.lau.test.Orden.sauce_test_version3 import Page
 ADD_FIRST_ITEM = "#add-to-cart-sauce-labs-backpack"
 ADD_SECOND_ITEM = "CSS:#add-to-cart-sauce-labs-fleece-jacket"
 ADD_THIRD_ITEM = "CSS:#add-to-cart-sauce-labs-onesie"
@@ -33,22 +26,5 @@ checkout_zip = "044510"
 
 # Clases
 
-my_page = Page()
-
-# driver
-mi_driver = my_page.set_driver()
-
-# Launch site
-launch_site = my_page.launch_site(mi_driver)
-sleep_time = my_page.delay_time(2)
-
-# my_page.do_login(mi_driver, By.CSS_SELECTOR, SEARCH_USERNAME_TEXT, search_text_name,
-#                  By.CSS_SELECTOR, SEARCH_PASSWORD_TEXT, search_text_password,
-#                  By.CSS_SELECTOR, SEARCH_BUTTON)
-
-my_page.delay_time(2)
-
-do_login_external(my_page, mi_driver, By.CSS_SELECTOR, SEARCH_USERNAME_TEXT, search_text_name,
-                  By.CSS_SELECTOR, SEARCH_PASSWORD_TEXT, search_text_password,
-                  By.CSS_SELECTOR, SEARCH_BUTTON)
-# Login
+my_test_run = LoginPage()
+my_test_run.do_login()
