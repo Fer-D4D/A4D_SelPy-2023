@@ -1,17 +1,11 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
-import time
 
-from Team.lau.test.sauce_updated_class import Laura
+from Team.lau.test.Backlog.sauce_updated_class import Laura
 
-
-from Team.lau.test.sauce_updated_class import find_element_by_css
-from Team.lau.test.sauce_updated_class import find_element_by_id
-from Team.lau.test.sauce_updated_class import get_text_from_element
-from Team.lau.test.sauce_updated_class import fill_text_to_element
-from Team.lau.test.sauce_updated_class import do_login
+from Team.lau.test.Backlog.sauce_updated_class import find_element_by_id
+from Team.lau.test.Backlog.sauce_updated_class import get_text_from_element
+from Team.lau.test.Backlog.sauce_updated_class import fill_text_to_element
+from Team.lau.test.Backlog.sauce_updated_class import do_login
 
 my_class = Laura()
 mi_driver = my_class.setup_driver()

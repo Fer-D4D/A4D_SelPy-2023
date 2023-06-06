@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from Team.lau.test.sauce_updated_class import Laura
+from Team.lau.test.Backlog.sauce_updated_class import Laura
 
 # Locators section
 SEARCH_USERNAME_TEXT = "#user-name"

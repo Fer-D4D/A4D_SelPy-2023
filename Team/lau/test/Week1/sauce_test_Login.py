@@ -1,7 +1,5 @@
 from selenium.webdriver.common.by import By
-
-from Team.lau import BasePage
-
+from Team.lau.test.Week1.sauce_test_methods import Page
 
 class Locators:
     SEARCH_USERNAME_TEXT = "#user-name"
@@ -13,8 +11,7 @@ class Data:
     search_text_name = "standard_user"
     search_text_password = "secret_sauce"
 
-
-class LoginPage(BasePage):
+class Login(Page):
 
     def __init__(self):
         super().__init__()
@@ -24,3 +21,5 @@ class LoginPage(BasePage):
         self.fill_text_to_element(By.CSS_SELECTOR, Locators.SEARCH_USERNAME_TEXT, username)
         self.fill_text_to_element(By.CSS_SELECTOR, Locators.SEARCH_PASSWORD_TEXT, password)
         self.do_click(By.CSS_SELECTOR, Locators.SEARCH_BUTTON)
+
+

@@ -1,5 +1,5 @@
-from Team.lau.test.Orden.sauce_login_page import LoginPage
-from Team.lau.test.Orden.sauce_test_version3 import Page
+from Team.lau import LoginPage
+
 ADD_FIRST_ITEM = "#add-to-cart-sauce-labs-backpack"
 ADD_SECOND_ITEM = "CSS:#add-to-cart-sauce-labs-fleece-jacket"
 ADD_THIRD_ITEM = "CSS:#add-to-cart-sauce-labs-onesie"
