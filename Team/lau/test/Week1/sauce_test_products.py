@@ -26,7 +26,7 @@ class Checkout:
 
 class AddProducts(Page):
 
-    def __int__(self, OnDriver):
+    def __init__(self, OnDriver):
         self.set_driver(OnDriver)
 
     # PL = Prodlocators() tiene que llamarla self.PL.ADD_FIRST_ITEM
