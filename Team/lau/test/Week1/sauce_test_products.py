@@ -34,5 +34,5 @@ class AddProducts(Page):
         self.do_click(By.CSS_SELECTOR, Prodlocators.ADD_FIRST_ITEM)
         self.do_click(By.XPATH, Prodlocators.IMAGE_SHIRT_ITEM)
         self.do_click(By.XPATH, Prodlocators.ADD_SHIRT_ITEM)
-        self.back_page()
+        self.do_click(By.XPATH, Prodlocators.BACK_BUTTON)
         self.do_click(By.CSS_SELECTOR, Prodlocators.REMOVE_FIRST_ITEM)
