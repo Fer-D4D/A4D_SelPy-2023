@@ -13,9 +13,6 @@ class Data:
 
 class Login(Page):
 
-    def __init__(self):
-        super().__init__()
-
     def do_login(self, username=Data.search_text_name, password=Data.search_text_password):
         self.launch_site()
         self.fill_text_to_element(By.CSS_SELECTOR, Locators.SEARCH_USERNAME_TEXT, username)

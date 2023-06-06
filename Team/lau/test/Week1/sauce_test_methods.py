@@ -5,15 +5,18 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 class Page:
 
-    def __init__(self):
-        self.Driver = self.set_driver()
-        print("Driver created")
+    Driver = None
 
-    @staticmethod
-    def set_driver():
-        return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    # def __init__(self):
+    #     self.Driver = self.set_driver()
+    #     print("Driver created")
+    def create_driver(self):
+        self.Driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-    def get_set_driver(self):
+    def set_driver(self, InDriver):
+        self.Driver = InDriver
+
+    def get_driver(self):
         return self.Driver
 
     def launch_site(self, base_url="https://www.saucedemo.com/", height=1440, width=1102):
