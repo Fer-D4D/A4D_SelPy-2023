@@ -4,13 +4,13 @@ from selenium.webdriver.common.by import By
 class Prodlocators:
 
     ADD_FIRST_ITEM = "#add-to-cart-sauce-labs-backpack"
-    ADD_SHIRT_ITEM = "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']"
-    VIEW_CAR_OPTION = "//a[@class='shopping_cart_link']"
     IMAGE_SHIRT_ITEM = "//div[@class='inventory_item_img']//a[@id='item_3_img_link']/child::img"
+    ADD_SHIRT_ITEM = "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']"
+    REMOVE_FIRST_ITEM = "#remove-sauce-labs-backpack"
+    VIEW_CAR_OPTION = "//a[@class='shopping_cart_link']"
     IMAGE_SHIRT_ITEM_ID = "item_3_img_link"
     TITLE_SHIRT = "//a[@id='item_3_title_link']//div[@class='inventory_item_name']"
     BACK_BUTTON = "//button[@id='back-to-products']"
-    REMOVE_FIRST_ITEM = "#remove-sauce-labs-backpack"
     CHECKOUT_BUTTON = "//button[@id='checkout']"
     CHECKOUT_NAME = "//input[@id='first-name']"
     CHECKOUT_LASTNAME = "//input[@id='last-name']"
