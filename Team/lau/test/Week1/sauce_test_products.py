@@ -1,25 +1,21 @@
-from Team.lau import Page
+from Team.lau.test.Week1.sauce_test_methods import Page
+from selenium.webdriver.common.by import By
 
-class Locators:
+class Prodlocators:
+
     ADD_FIRST_ITEM = "#add-to-cart-sauce-labs-backpack"
-    ADD_SECOND_ITEM = "CSS:#add-to-cart-sauce-labs-fleece-jacket"
-    ADD_THIRD_ITEM = "CSS:#add-to-cart-sauce-labs-onesie"
     ADD_SHIRT_ITEM = "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']"
-    VIEW_CAR_OPTION = "XPATH://a[@class='shopping_cart_link']"
-    VIEW_RESULT_ITEM1 = "XPATH://div[@class='cart_item_label']//a[@id='item_4_title_link']/child::div[1]"
-    VIEW_RESULT_ITEM2 = "XPATH://div[@class='cart_item_label']//a[@id='item_3_title_link']/child::div[1]"
-    VIEW_RESULT_PRICE = "XPATH://*[@id='cart_contents_container']/div/div[1]/div[3]/div[2]/div[2]/div"
-    IMAGE_FIRST_ITEM = "XPATH://div[@class='inventory_item_img']//a[@id='item_4_img_link']/child::img"
-    IMAGE_SHIRT_ITEM = "XPATH://div[@class='inventory_item_img']//a[@id='item_3_img_link']/child::img"
+    VIEW_CAR_OPTION = "//a[@class='shopping_cart_link']"
+    IMAGE_SHIRT_ITEM = "//div[@class='inventory_item_img']//a[@id='item_3_img_link']/child::img"
     IMAGE_SHIRT_ITEM_ID = "item_3_img_link"
     TITLE_SHIRT = "//a[@id='item_3_title_link']//div[@class='inventory_item_name']"
-    BACK_BUTTON = "XPATH://button[@id='back-to-products']"
-    REMOVE_FIRST_ITEM = "CSS:#remove-sauce-labs-backpack"
-    CHECKOUT_BUTTON = "XPATH://button[@id='checkout']"
-    CHECKOUT_NAME = "XPATH://input[@id='first-name']"
-    CHECKOUT_LASTNAME = "XPATH://input[@id='last-name']"
-    CHECKOUT_ZIP = "XPATH://input[@id='postal-code']"
-    CHECKOUT_CONTINUE = "XPATH://input[@id='continue']"
+    BACK_BUTTON = "//button[@id='back-to-products']"
+    REMOVE_FIRST_ITEM = "#remove-sauce-labs-backpack"
+    CHECKOUT_BUTTON = "//button[@id='checkout']"
+    CHECKOUT_NAME = "//input[@id='first-name']"
+    CHECKOUT_LASTNAME = "//input[@id='last-name']"
+    CHECKOUT_ZIP = "//input[@id='postal-code']"
+    CHECKOUT_CONTINUE = "//input[@id='continue']"
     VIEW_RESULT_PRINT8 = "//div[@class='summary_info']/child::div[8]"
 
 
@@ -28,9 +24,14 @@ class Checkout:
     checkout_lastname = "Curtidor"
     checkout_zip = "044510"
 
-class Resume(Page):
+class AddProducts(Page):
 
     def __init__(self):
         super().__init__()
 
-
+    def adding_to_cart(self):
+        self.do_click(By.CSS_SELECTOR, Prodlocators.ADD_FIRST_ITEM)
+        self.do_click(By.XPATH, Prodlocators.IMAGE_SHIRT_ITEM)
+        self.do_click(By.XPATH, Prodlocators.ADD_SHIRT_ITEM)
+        self.back_page()
+        self.do_click(By.CSS_SELECTOR, Prodlocators.REMOVE_FIRST_ITEM)

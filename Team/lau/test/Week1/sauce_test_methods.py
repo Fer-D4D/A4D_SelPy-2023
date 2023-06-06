@@ -33,6 +33,9 @@ class Page:
     def do_click(self, by_locator, locator):
         return self.Driver.find_element(by_locator, locator).click()
 
+    def back_page(self):
+        self.back_page()
+
     # def do_login(self, *args):
     #     print(args)
     #     self.fill_text_to_element(args[0], args[1], args[2])

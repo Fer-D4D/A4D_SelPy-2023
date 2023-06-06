@@ -22,4 +22,3 @@ class Login(Page):
         self.fill_text_to_element(By.CSS_SELECTOR, Locators.SEARCH_PASSWORD_TEXT, password)
         self.do_click(By.CSS_SELECTOR, Locators.SEARCH_BUTTON)
 
-

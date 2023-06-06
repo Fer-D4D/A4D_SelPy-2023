@@ -9,8 +9,12 @@ login = Login()
 # data = Data()
 
 #Driver
-my_page.get_set_driver()
+#my_page.get_set_driver()
 
 # Launch site and Login
 login.do_login()
 my_page.delay_time(2)
+
+#Add products
+
+
