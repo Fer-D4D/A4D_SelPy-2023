@@ -7,7 +7,7 @@ class Page:
 
     def __init__(self):
         self.Driver = self.set_driver()
-        print("Genere una clase y un driver")
+        print("Driver created")
 
     @staticmethod
     def set_driver():
