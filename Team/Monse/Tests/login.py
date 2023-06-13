@@ -3,31 +3,39 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import time
+import unittest
 
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-driver.implicitly_wait(10)
-driver.maximize_window()
+class LoginTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        cls.driver.implicitly_wait(10)
+        cls.driver.maximize_window()
 
-driver.get("https://www.saucedemo.com/")
+    def test_login_valid(self):
+        self.driver.get("https://www.saucedemo.com/")
+        self.driver.find_element(By.ID, "user-name").send_keys("standard_user")
+        self.driver.find_element(By.ID, "password").send_keys("secret_sauce")
+        time.sleep(2)
+        self.driver.find_element(By.ID, "login-button").click()
+        time.sleep(3)
+        self.driver.find_element(By.ID, "react-burger-menu-btn").click()
+        self.driver.find_element(By.LINK_TEXT, "Logout").click()
+        time.sleep(2)
 
-driver.find_element(By.ID, "user-name").send_keys("standard_user")
-driver.find_element(By.ID, "password").send_keys("secret_sauce")
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.close()
+        cls.driver.quit()
+        print("Test Completed!")
 
-time.sleep(2)
+    if __name__ == '__main__':
+        unittest.main()
 
-driver.find_element(By.ID, "login-button").click()
 
-time.sleep(3)
 
-driver.find_element(By.ID, "react-burger-menu-btn").click()
-driver.find_element(By.LINK_TEXT, "Logout").click()
 
-time.sleep(2)
-
-driver.close()
-driver.quit()
-print("Test Completed!")
 
 
 
