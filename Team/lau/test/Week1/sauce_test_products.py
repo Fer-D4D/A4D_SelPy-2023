@@ -8,8 +8,9 @@ class Prodlocators:
     ADD_SHIRT_ITEM = "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']"
     REMOVE_FIRST_ITEM = "#remove-sauce-labs-backpack"
     VIEW_CAR_OPTION = "//a[@class='shopping_cart_link']"
-    IMAGE_SHIRT_ITEM_ID = "item_3_img_link"
     TITLE_SHIRT = "//a[@id='item_3_title_link']//div[@class='inventory_item_name']"
+    RESUME_SHIRT = "//div[@class='inventory_item_desc']"
+    PRICE_SHIRT = "//div[@class='inventory_item_price']"
     BACK_BUTTON = "//button[@id='back-to-products']"
     CHECKOUT_BUTTON = "//button[@id='checkout']"
     CHECKOUT_NAME = "//input[@id='first-name']"
@@ -36,3 +37,11 @@ class AddProducts(Page):
         self.do_click(By.XPATH, Prodlocators.ADD_SHIRT_ITEM)
         self.do_click(By.XPATH, Prodlocators.BACK_BUTTON)
         self.do_click(By.CSS_SELECTOR, Prodlocators.REMOVE_FIRST_ITEM)
+
+    def summary_cart(self):
+        self.do_click(By.XPATH, Prodlocators.VIEW_CAR_OPTION)
+        print(self.get_text_to_element(By.XPATH, Prodlocators.TITLE_SHIRT))
+        print(self.get_text_to_element(By.XPATH, Prodlocators.RESUME_SHIRT))
+        print(self.get_text_to_element(By.XPATH, Prodlocators.PRICE_SHIRT))
+
+

@@ -20,3 +20,4 @@ login.delay_time(2)
 #Add products
 
 addproduct.adding_to_cart()
+addproduct.summary_cart()
