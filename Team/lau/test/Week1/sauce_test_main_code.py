@@ -10,12 +10,12 @@ login = Login()
 login.create_driver()
 
 addproduct = AddProducts(login.get_driver())
-# locator = Locators()
-# data = Data()
 
 # Launch site and Login
-login.do_login()
-login.delay_time(2)
+#login.do_login()
+
+#Validate login
+login.validate_login()
 
 #Add products
 

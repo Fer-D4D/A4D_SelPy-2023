@@ -42,6 +42,9 @@ class Page:
     def back_to_page(self):
         self.Driver.back()
 
+    def refresh_to_page(self):
+        self.Driver.refresh()
+
     def is_selected(self, by_locator, locator):
         self.Driver.find_element(by_locator, locator).is_selected()
 
