@@ -17,8 +17,9 @@ class Prodlocators:
     CHECKOUT_LASTNAME = "//input[@id='last-name']"
     CHECKOUT_ZIP = "//input[@id='postal-code']"
     CHECKOUT_CONTINUE = "//input[@id='continue']"
-    VIEW_RESULT_PRINT8 = "//div[@class='summary_info']/child::div[8]"
-
+    VIEW_RESULT_PRINT8 = "//div[@class='summary_info_label summary_total_label']"
+    FINISH_BUTTON = "#finish"
+    SUCCESS_MESSAGE = ".complete-header"
 
 class Checkout:
     checkout_name = "Laura"
@@ -43,5 +44,15 @@ class AddProducts(Page):
         print(self.get_text_to_element(By.XPATH, Prodlocators.TITLE_SHIRT))
         print(self.get_text_to_element(By.XPATH, Prodlocators.RESUME_SHIRT))
         print(self.get_text_to_element(By.XPATH, Prodlocators.PRICE_SHIRT))
+
+    def set_checkout(self):
+        self.do_click(By.XPATH, Prodlocators.CHECKOUT_BUTTON)
+        self.fill_text_to_element(By.XPATH, Prodlocators.CHECKOUT_NAME, Checkout.checkout_name)
+        self.fill_text_to_element(By.XPATH, Prodlocators.CHECKOUT_LASTNAME, Checkout.checkout_lastname)
+        self.fill_text_to_element(By.XPATH, Prodlocators.CHECKOUT_ZIP, Checkout.checkout_zip)
+        self.do_click(By.XPATH, Prodlocators.CHECKOUT_CONTINUE)
+        print(self.get_text_to_element(By.XPATH, Prodlocators.VIEW_RESULT_PRINT8))
+        self.do_click(By.CSS_SELECTOR, Prodlocators.FINISH_BUTTON)
+        print(self.get_text_to_element(By.CSS_SELECTOR, Prodlocators.SUCCESS_MESSAGE))
 
 

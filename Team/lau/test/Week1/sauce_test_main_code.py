@@ -21,3 +21,6 @@ login.delay_time(2)
 
 addproduct.adding_to_cart()
 addproduct.summary_cart()
+login.delay_time(3)
+addproduct.set_checkout()
+login.back_to_page()
