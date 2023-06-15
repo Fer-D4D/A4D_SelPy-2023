@@ -6,10 +6,10 @@ from Team.lau.test.Week1.sauce_test_products import AddProducts
 
 #my_page = Page()
 login = Login()
+addproduct = AddProducts(login.get_driver())
+
 #Driver
 login.create_driver()
-
-addproduct = AddProducts(login.get_driver())
 
 # Launch site and Login
 #login.do_login()

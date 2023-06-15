@@ -1,3 +1,5 @@
+from selenium.webdriver.common.by import By
+
 from Team.Fer.core.Common_II import TinyCore
 
 
@@ -5,11 +7,12 @@ class Selectors:
     USER_NAME_FORM_FIELD = "ID:user-name"
     PASSWORD_FORM_FIELD = "ID:password"
     LOGIN_BUTTON = "ID:login-button"
+    LOGIN_ERROR_MSG = ".error-button"
 
 
 class TestData:
     STANDARD_USER_NAME = "standard_user"
-    GENERIC_PASSWORD = "secret_sauce"
+    GENERIC_PASSWORD = "sere"
 
 
 class LoginPage(TinyCore):
@@ -34,3 +37,6 @@ class LoginPage(TinyCore):
 
     def proceed_landing_page(self):
         self.do_click(self.sd.LOGIN_BUTTON)
+
+    def validate_login(self):
+        return len(self.DRIVER.find_elements(By.CSS_SELECTOR, Selectors.LOGIN_ERROR_MSG))
