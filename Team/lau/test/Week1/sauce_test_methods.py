@@ -39,10 +39,10 @@ class Page:
     def get_text_to_element(self, by_locator, locator):
         return self.Driver.find_element(by_locator, locator).text
     def refresh_to_page(self):
-        return self.refresh_to_page()
+        return self.Driver.refresh()
 
     def back_to_page(self):
-        return self.back_to_page()
+        return self.Driver.back()
     def choose_dropdown_option(self, *args):
         self.do_click(args[0], args[1])
         self.fill_text_to_element(args[2], args[3], args[4])
