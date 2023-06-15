@@ -1,4 +1,4 @@
-from Team.Fer.core.Common_II import TinyCore, waste_some_time
+from Team.Fer.core.common_iii import TinyCore
 
 
 class Selectors:
@@ -27,23 +27,24 @@ class HomePage(TinyCore):
     def __init__(self, browser='chrome', viewer_mode="Viewer-Mode-OFF", verbose_mode="Verbose-Mode-OFF",
                  highlight_mode="Highlight-Mode-OFF"):
         super().__init__()
-        self.set_browser(browser)
+        self.define_browser(browser)
         self.set_viewer_mode(viewer_mode)
         self.set_verbose_mode(verbose_mode)
         self.set_highlight_mode(highlight_mode)
 
     def fill_login_popup_form(self, username=TestData.STANDARD_USER_NAME, password=TestData.GENERIC_PASSWORD):
-        waste_some_time(5)
-        self.do_click(Selectors.USER_MENU_ICON)
-        self.fill_input_text(Selectors.LOGIN_POPUP_USER_NAME_FORM_FIELD, username)
-        self.fill_input_text(Selectors.LOGIN_POPUP_PASSWORD_FORM_FIELD, password)
+        return self.do_click_and_check(Selectors.USER_MENU_ICON, Selectors.LOGIN_POPUP_USER_NAME_FORM_FIELD) \
+               and self.fill_form_element_and_check(Selectors.LOGIN_POPUP_USER_NAME_FORM_FIELD, username) \
+               and self.fill_form_element_and_check(Selectors.LOGIN_POPUP_PASSWORD_FORM_FIELD, password)
+
+    def proceed_to_login(self):
+        return self.do_click(Selectors.LOGIN_POPUP_LOGIN_BUTTON)
 
     def do_login(self):
         self.fill_login_popup_form()
         self.proceed_to_login()
 
-    def proceed_to_login(self):
-        self.do_click(Selectors.LOGIN_POPUP_LOGIN_BUTTON)
+
 
     def check_login_attempt_result(self, username=TestData.STANDARD_USER_NAME):
         waste_some_time(.2)

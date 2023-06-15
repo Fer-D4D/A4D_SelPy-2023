@@ -1,17 +1,14 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
-import time
-from core.sauce_updated import delay_time
-from core.sauce_updated import find_element_by_css
-from core.sauce_updated import find_element_by_id
-from core.sauce_updated import launch_site
-from core.sauce_updated import get_text_from_element
-from core.sauce_updated import fill_text_to_element
-from core.sauce_updated import do_login
 
-mi_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+from Team.lau.test.Backlog.sauce_updated_class import Laura
+
+from Team.lau.test.Backlog.sauce_updated_class import find_element_by_id
+from Team.lau.test.Backlog.sauce_updated_class import get_text_from_element
+from Team.lau.test.Backlog.sauce_updated_class import fill_text_to_element
+from Team.lau.test.Backlog.sauce_updated_class import do_login
+
+my_class = Laura()
+mi_driver = my_class.setup_driver()
 
 SEARCH_USERNAME_TEXT = "#user-name"
 SEARCH_PASSWORD_TEXT = "#password"
@@ -54,13 +51,14 @@ checkout_zip = "044510"
 #Inicio
 #mi_driver.get("https://www.saucedemo.com/")
 
-Open_site = launch_site(mi_driver, "https://www.saucedemo.com/")
-mi_driver.set_window_size(1440, 1102)
+my_class.launch_site(mi_driver, "https://www.saucedemo.com/", 800, 600)
+
+
 #FIND ELEMENT CSS: username_input = mi_driver.find_element(By.CSS_SELECTOR, "#user-name")
 #FIND ELEMENT XPATH: add_shirt_cart = mi_driver.find_element(By.XPATH, "//button[@id='add-to-cart-test.allthethings()-t-shirt-(red)']")
 #FIND ELEMENT ID: opening_image = mi_driver.find_element(By.ID, "item_3_img_link")
 #GET TEXT FROM AN ELEMENT:shirt_information = mi_driver.find_element(By.XPATH, "//a[@id='item_3_title_link']//div[@class='inventory_item_name']").text
-#DELAY:delay_time(2)
+#DELAY:my_class.delay_time(2)
 #BACK TO PREVIUS PAGE: mi_driver.back()
 
 loginPage = do_login(mi_driver, "standard_user", "secret_sauce")
@@ -77,7 +75,7 @@ loginPage = do_login(mi_driver, "standard_user", "secret_sauce")
 #submit_button_input = do_click(mi_driver, "//input[@id='login-button']")
 #submit_button_input = mi_driver.find_element(By.CSS_SELECTOR, ".submit-button.btn_action")
 #submit_button_input.click()
-delay_time(2)
+my_class.delay_time(2)
 #add the "Sauce Labs backpack"
 adding_first_item = mi_driver.find_element(By.CSS_SELECTOR, ADD_FIRST_ITEM)
 adding_first_item.click()
@@ -106,7 +104,7 @@ shirt_description = mi_driver.find_element(By.XPATH, "//div[@class='cart_item_la
 shirt_price = mi_driver.find_element(By.XPATH, "//div[@class='item_pricebar']//div[@class='inventory_item_price']").text
 print("Response text:", shirt_information, shirt_description, shirt_price)
 
-delay_time(3)
+my_class.delay_time(3)
 #checkout button
 
 checkout_product = mi_driver.find_element(By.XPATH, "//button[@id='checkout']").click()
