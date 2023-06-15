@@ -1,4 +1,3 @@
-from Team.lau.test.Week1.sauce_test_methods import Page
 from Team.lau.test.Week1.sauce_test_Login import Login
 from Team.lau.test.Week1.sauce_test_products import AddProducts
 
