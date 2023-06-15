@@ -38,8 +38,6 @@ class enrollment_form(Page):
         self.launch_site(base_url="https://copacom-qa.copa.s4n.co/es-gs/enrollment/")
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Data.FILL_ENROLL_NAME)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_LASTNAME, Data.FILL_ENROLL_LASTNAME)
-
-
         self.do_click(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_YEAR, "1990")
         self.do_click(By.XPATH, Locators.ENROLL_YEAR)
