@@ -40,9 +40,9 @@ class enrollment_form(Page):
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_LASTNAME, Data.FILL_ENROLL_LASTNAME)
 
 
-        # self.do_click(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR)
-        # self.fill_text_to_element(By.XPATH, Locators.ENROLL_YEAR, "1990")
-        # self.do_click(By.XPATH, Locators.ENROLL_YEAR)
+        self.do_click(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR)
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_YEAR, "1990")
+        self.do_click(By.XPATH, Locators.ENROLL_YEAR)
 
         # self.choose_dropdown_option(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR,
         #                             By.XPATH, Locators.ENROLL_YEAR, Data.FILL_BIRTHDATE_YEAR,
