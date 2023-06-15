@@ -1,5 +1,5 @@
 import time
-import calendar;
+import calendar
 from functools import wraps
 
 from selenium import webdriver
