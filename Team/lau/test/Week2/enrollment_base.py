@@ -2,13 +2,14 @@ import self as self
 from selenium.webdriver.common.by import By
 from Team.lau.test.Week1.sauce_test_methods import Page
 
+
 class Locators:
     ENROLL_NAME = "//input[@id='mui-1']"
     ENROLL_LASTNAME = "//input[@id='mui-2']"
     ENROLL_BIRTHDATE_YEAR = "//div[@id='mui-component-select-birthDate.year']"
-    YEAR = "//*[@id='-open']/li[33]"
     ENROLL_BIRTHDATE_MONTH = "//div[@id='mui-component-select-birthDate.month']"
     ENROLL_BIRTHDATE_DAY = "//div[@id='mui-component-select-birthDate.day']"
+    ENROLL_YEAR = "//*[@id='-open']/li[33]"
     ENROLL_COUNTRY = "//div[@id='mui-component-select-nationality']"
     ENROLL_DOC = "//div[@id='mui-component-select-memberDoc.documentType']"
     ENROLL_DOC_NUM = "//input[@id='mui-22']"
@@ -24,9 +25,6 @@ class Locators:
 class Data:
     FILL_ENROLL_NAME = "Maria"
     FILL_ENROLL_LASTNAME = "Galindo"
-    FILL_BIRTHDATE_YEAR = "1990"
-    FILL_BIRTHDATE_MONTH = "//div[@id='mui-component-select-birthDate.month']"
-    FILL_BIRTHDATE_DAY = "//div[@id='mui-component-select-birthDate.day']"
     FILL_ENROLL_DOC_NUM = "1116778999"
     FILL_ENROLL_EMAIL = "maria_galindo@eppam.com"
     FILL_ENROLL_PASSWORD = "Test12345"
@@ -35,9 +33,17 @@ class Data:
 class enrollment_form(Page):
 
     def do_enrollment(self):
+
+
         self.launch_site(base_url="https://copacom-qa.copa.s4n.co/es-gs/enrollment/")
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Data.FILL_ENROLL_NAME)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_LASTNAME, Data.FILL_ENROLL_LASTNAME)
-        self.choose_dropdown_option(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR,
-                                    By.XPATH, Locators.YEAR, Data.FILL_BIRTHDATE_YEAR,
-                                    By.XPATH, Locators.YEAR)
+
+
+        # self.do_click(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR)
+        # self.fill_text_to_element(By.XPATH, Locators.ENROLL_YEAR, "1990")
+        # self.do_click(By.XPATH, Locators.ENROLL_YEAR)
+
+        # self.choose_dropdown_option(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR,
+        #                             By.XPATH, Locators.ENROLL_YEAR, Data.FILL_BIRTHDATE_YEAR,
+        #                             By.XPATH, Locators.ENROLL_YEAR)
