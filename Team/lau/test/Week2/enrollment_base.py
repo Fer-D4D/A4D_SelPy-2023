@@ -33,8 +33,6 @@ class Data:
 class enrollment_form(Page):
 
     def do_enrollment(self):
-
-
         self.launch_site(base_url="https://copacom-qa.copa.s4n.co/es-gs/enrollment/")
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Data.FILL_ENROLL_NAME)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_LASTNAME, Data.FILL_ENROLL_LASTNAME)
