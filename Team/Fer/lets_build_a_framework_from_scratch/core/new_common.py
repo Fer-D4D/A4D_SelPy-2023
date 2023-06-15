@@ -12,4 +12,4 @@ class TinyCore:
         return self.DRIVER
 
     def do_click(self, locator):
-        self.DRIVER.find_element(By.ID, locator).click()
+        self.DRIVER.find_element(By.XPATH, locator).click()

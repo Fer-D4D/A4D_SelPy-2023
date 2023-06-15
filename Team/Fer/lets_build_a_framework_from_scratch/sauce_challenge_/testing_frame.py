@@ -4,7 +4,7 @@ lets_automate = TinyCore()
 
 print(lets_automate.set_driver())
 
-LOGIN_BUTTON = "#login-button"
+LOGIN_BUTTON = "//*[@id='login-button']"
 
 lets_automate.do_click(LOGIN_BUTTON)
 
