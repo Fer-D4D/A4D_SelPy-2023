@@ -36,10 +36,24 @@ class Page:
     def do_click(self, by_locator, locator):
         return self.Driver.find_element(by_locator, locator).click()
 
+    def get_text_to_element(self, by_locator, locator):
+        return self.Driver.find_element(by_locator, locator).text
+
+    def back_to_page(self):
+        self.Driver.back()
+
+    def refresh_to_page(self):
+        self.Driver.refresh()
+    def is_selected(self, by_locator, locator):
+        self.Driver.find_element(by_locator, locator).is_selected()
+
+    def choose_dropdown_option(self, *args):
+        self.do_click(args[0], args[1]),
+        self.fill_text_to_element(args[2], args[3], args[4]),
+        self.do_click(args[5], args[6])
+
     # def do_login(self, *args):
     #     print(args)
     #     self.fill_text_to_element(args[0], args[1], args[2])
     #     self.fill_text_to_element(args[3], args[4], args[5])
     #     self.do_click(args[6], args[7])
-0
-
