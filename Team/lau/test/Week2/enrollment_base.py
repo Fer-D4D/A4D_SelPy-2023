@@ -14,9 +14,10 @@ class Locators:
     ENROLL_DAY = "//*[@id='-open']/li[10]"
     ENROLL_COUNTRY = "//div[@id='mui-component-select-nationality']"
     ENROLL_COUNTRY_OPTION = "//*[@id='-open']/li[51]"
+    ENROLL_NUM_CONNECT = "//input[@id='mui-395']"
     ENROLL_DOC = "//div[@id='mui-component-select-memberDoc.documentType']"
     ENROLL_DOC_OPTION = "//*[@id='-open']/li[3]"
-    ENROLL_DOC_NUM = "//input[@id='mui-46']"
+    ENROLL_DOC_NUMERO = "/html/body/div[1]/div[3]/div/div/form/div[1]/div[6]/div/div[1]/div/input"
     ENROLL_DOC_COUNTRY = "//div[@id='mui-component-select-memberDoc.issuingCountry']"
     ENROLL_DOC_DATE_YEAR = "//div[@id='mui-component-select-memberDoc.validUntil.year']"
     DOC_YEAR = "//*[@id='-open']/li[4]"
@@ -35,7 +36,7 @@ class Data:
     Fill_ENROLL_DAY = "10"
     Fill_ENROLL_COUNTRY = "colombia"
     Fill_ENROLL_DOC = "Cédula de identidad"
-    FILL_ENROLL_DOC_NUM = "1116778999"
+    FILL_ENROLL_DOC_NUM = "AG12451"
     FILL_YEAR_DOC = "2025"
     FILL_ENROLL_EMAIL = "maria_galindo@eppam.com"
     FILL_ENROLL_PASSWORD = "Test12345"
@@ -74,6 +75,9 @@ class enrollment_form(Page):
         self.choose_dropdown_option(By.XPATH, Locators.ENROLL_DOC_DATE_DAY,
                                     By.XPATH, Locators.ENROLL_DAY, Data.Fill_ENROLL_DAY,
                                     By.XPATH, Locators.ENROLL_DAY)
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_DOC_NUMERO, Data.FILL_ENROLL_DOC_NUM)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_EMAIL, Data.FILL_ENROLL_EMAIL)
-
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_PASSWORD, Data.FILL_ENROLL_PASSWORD)
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_PIN, Data.FILL_ENROLL_PIN)
+        self.do_click(By.XPATH, Locators.ENROLL_BUTTON)
 
