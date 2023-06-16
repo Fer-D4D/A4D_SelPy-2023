@@ -4,6 +4,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import time
 import unittest
+from Team.Monse.Pages.loginPage import LoginPage
+from Team.Monse.Pages.homePage import HomePage
 
 
 class LoginTest(unittest.TestCase):
@@ -14,14 +16,18 @@ class LoginTest(unittest.TestCase):
         cls.driver.maximize_window()
 
     def test_login_valid(self):
-        self.driver.get("https://www.saucedemo.com/")
-        self.driver.find_element(By.ID, "user-name").send_keys("standard_user")
-        self.driver.find_element(By.ID, "password").send_keys("secret_sauce")
-        time.sleep(2)
-        self.driver.find_element(By.ID, "login-button").click()
-        time.sleep(3)
-        self.driver.find_element(By.ID, "react-burger-menu-btn").click()
-        self.driver.find_element(By.LINK_TEXT, "Logout").click()
+        driver = self.driver
+        driver.get("https://www.saucedemo.com/")
+
+        login = LoginPage(driver)
+        login.enter_username("standard_user")
+        login.enter_password("secret_sauce")
+        login.click_login()
+
+        homepage = HomePage(driver)
+        homepage.click_mainpage()
+        homepage.click_logout()
+
         time.sleep(2)
 
     @classmethod
