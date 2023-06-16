@@ -30,9 +30,11 @@ class AddProducts(Page):
 
     def __init__(self, OnDriver):
         self.set_driver(OnDriver)
+        print(OnDriver)
 
     # PL = Prodlocators() tiene que llamarla self.PL.ADD_FIRST_ITEM
     def adding_to_cart(self):
+        print(self.Driver)
         self.do_click(By.CSS_SELECTOR, Prodlocators.ADD_FIRST_ITEM)
         self.do_click(By.XPATH, Prodlocators.IMAGE_SHIRT_ITEM)
         self.do_click(By.XPATH, Prodlocators.ADD_SHIRT_ITEM)
