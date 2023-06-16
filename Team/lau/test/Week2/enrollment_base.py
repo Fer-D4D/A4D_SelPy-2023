@@ -16,9 +16,10 @@ class Locators:
     ENROLL_COUNTRY_OPTION = "//*[@id='-open']/li[51]"
     ENROLL_DOC = "//div[@id='mui-component-select-memberDoc.documentType']"
     ENROLL_DOC_OPTION = "//*[@id='-open']/li[3]"
-    ENROLL_DOC_NUM = "//input[@id='mui-22']"
+    ENROLL_DOC_NUM = "//input[@id='mui-46']"
     ENROLL_DOC_COUNTRY = "//div[@id='mui-component-select-memberDoc.issuingCountry']"
     ENROLL_DOC_DATE_YEAR = "//div[@id='mui-component-select-memberDoc.validUntil.year']"
+    DOC_YEAR = "//*[@id='-open']/li[4]"
     ENROLL_DOC_DATE_MONTH = "//div[@id='mui-component-select-memberDoc.validUntil.month']"
     ENROLL_DOC_DATE_DAY = "//div[@id='mui-component-select-memberDoc.validUntil.day']"
     ENROLL_EMAIL = "//input[@id='mui-3']"
@@ -35,6 +36,7 @@ class Data:
     Fill_ENROLL_COUNTRY = "colombia"
     Fill_ENROLL_DOC = "Cédula de identidad"
     FILL_ENROLL_DOC_NUM = "1116778999"
+    FILL_YEAR_DOC = "2025"
     FILL_ENROLL_EMAIL = "maria_galindo@eppam.com"
     FILL_ENROLL_PASSWORD = "Test12345"
     FILL_ENROLL_PIN = "2938"
@@ -54,9 +56,24 @@ class enrollment_form(Page):
         self.choose_dropdown_option(By.XPATH, Locators.ENROLL_BIRTHDATE_DAY,
                                     By.XPATH, Locators.ENROLL_DAY, Data.Fill_ENROLL_DAY,
                                     By.XPATH, Locators.ENROLL_DAY)
-        self.choose_dropdown_option(By.XPATH, Locators.ENROLL_BIRTHDATE_DAY,
-                                    By.XPATH, Locators.ENROLL_DAY, Data.Fill_ENROLL_COUNTRY,
-                                    By.XPATH, Locators.ENROLL_DAY)
+        self.choose_dropdown_option(By.XPATH, Locators.ENROLL_COUNTRY,
+                                    By.XPATH, Locators.ENROLL_COUNTRY_OPTION, Data.Fill_ENROLL_COUNTRY,
+                                    By.XPATH, Locators.ENROLL_COUNTRY_OPTION)
         self.choose_dropdown_option(By.XPATH, Locators.ENROLL_DOC,
                                     By.XPATH, Locators.ENROLL_DOC_OPTION, Data.Fill_ENROLL_DOC,
                                     By.XPATH, Locators.ENROLL_DOC_OPTION)
+        self.choose_dropdown_option(By.XPATH, Locators.ENROLL_DOC_COUNTRY,
+                                    By.XPATH, Locators.ENROLL_COUNTRY_OPTION, Data.Fill_ENROLL_COUNTRY,
+                                    By.XPATH, Locators.ENROLL_COUNTRY_OPTION)
+        self.choose_dropdown_option(By.XPATH, Locators.ENROLL_DOC_DATE_YEAR,
+                                    By.XPATH, Locators.DOC_YEAR, Data.FILL_YEAR_DOC,
+                                    By.XPATH, Locators.DOC_YEAR)
+        self.choose_dropdown_option(By.XPATH, Locators.ENROLL_DOC_DATE_MONTH,
+                                    By.XPATH, Locators.ENROLL_MONTH, Data.Fill_ENROLL_MONTH,
+                                    By.XPATH, Locators.ENROLL_MONTH)
+        self.choose_dropdown_option(By.XPATH, Locators.ENROLL_DOC_DATE_DAY,
+                                    By.XPATH, Locators.ENROLL_DAY, Data.Fill_ENROLL_DAY,
+                                    By.XPATH, Locators.ENROLL_DAY)
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_EMAIL, Data.FILL_ENROLL_EMAIL)
+
+
