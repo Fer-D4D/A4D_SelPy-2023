@@ -26,7 +26,7 @@ class Locators:
     ENROLL_EMAIL = "//input[@id='mui-3']"
     ENROLL_PASSWORD = "//input[@id='mui-4']"
     ENROLL_PIN = "//input[@id='mui-5']"
-    ENROLL_BUTTON = "//*[@id='__next']/div[3]/div/div/form/div[3]/div[6]/button"
+    ENROLL_BUTTON = "/html/body/div[1]/div[3]/div/div/form/div[3]/div[6]/button"
 
 class Data:
     FILL_ENROLL_NAME = "Maria"
@@ -79,5 +79,4 @@ class enrollment_form(Page):
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_EMAIL, Data.FILL_ENROLL_EMAIL)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_PASSWORD, Data.FILL_ENROLL_PASSWORD)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_PIN, Data.FILL_ENROLL_PIN)
-        self.do_click(By.XPATH, Locators.ENROLL_BUTTON)
 
