@@ -112,7 +112,7 @@ class enrollment_form(Page):
         min_name_length = len(min_name_length)
         errormessagerequired = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR_MIN)
         expected_error_message = "Se requieren mínimo 2 caracteres"
-        if min_name_length == 1 and errormessagerequired == expected_error_message:
+        if min_name_length <= 1 and errormessagerequired == expected_error_message:
             print("Character validation failed, you need more than 1 letter please enter a valid name")
         else:
             print("Character validation ok")
