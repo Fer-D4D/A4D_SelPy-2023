@@ -43,10 +43,17 @@ class Data:
     FILL_ENROLL_PASSWORD = "Test12345"
     FILL_ENROLL_PIN = "2938"
 
+class Errors_labels:
+    NAME_ERROR = "//span[text()='Este campo no cumple con el formato esperado. Evite utilizar caracteres especiales o ( - , _ , ? , / , \ , + , [ , ] , : , ; , = " ",a "," a)).']"
+    NAME_ERROR_FILL = "M4RI@"
+
 class enrollment_form(Page):
 
-    def do_enrollment(self):
+    def launch_enroll_site(self):
         self.launch_site(base_url="https://copacom-qa.copa.s4n.co/es-gs/enrollment/")
+
+    def do_enrollment(self):
+        self.launch_enroll_site()
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Data.FILL_ENROLL_NAME)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_LASTNAME, Data.FILL_ENROLL_LASTNAME)
         self.choose_dropdown_option(By.XPATH, Locators.ENROLL_BIRTHDATE_YEAR,
@@ -83,3 +90,13 @@ class enrollment_form(Page):
         self.do_click(By.XPATH, Locators.ENROLL_BUTTON)
         self.do_click(By.XPATH, Locators.ACCEPT_MODAL_BUTTON)
 
+    def validate_name_error(self):
+        self.launch_enroll_site()
+        self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Errors_labels.NAME_ERROR_FILL)
+        errormessage = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR)
+        expected_error_message = "Este campo no cumple con el formato esperado. Evite utilizar caracteres especiales o ( - , _ , ? , / , \ , + , [ , ] , : , ; , = " ',a ',' a)).'
+        if errormessage == expected_error_message:
+            print("Character validation failed, please enter a valid name")
+        else:
+            print("Test failed")
