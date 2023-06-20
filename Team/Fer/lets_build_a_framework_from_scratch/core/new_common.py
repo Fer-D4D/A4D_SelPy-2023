@@ -1,6 +1,8 @@
+import time
+
 from selenium import webdriver
 from selenium.common import ElementNotVisibleException, ElementNotSelectableException, NoSuchElementException, \
-    TimeoutException, InvalidSelectorException
+    TimeoutException, InvalidSelectorException, ElementClickInterceptedException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -34,10 +36,16 @@ class TinyCore(Utils):
         self.DRIVER.implicitly_wait(waiting_time)
 
     def do_click(self, locator):
-        self.DRIVER.find_element(By.XPATH, locator).click()
+        # self.DRIVER.find_element(By.XPATH, locator).click()
+        try:
+            self.DRIVER.find_element(By.XPATH, locator).click()
+        except ElementClickInterceptedException:
+            time.sleep(.25)
+            print("Re-clicking")
+            self.do_click(locator)
 
-    def efficient_wait_n_do_click(self, locator):
-        self.efficient_wait(10, .1).until(ec.element_to_be_clickable((By.XPATH, locator))).click()
+    def fluent_wait_n_do_click(self, locator):
+        self.fluent_wait(10, .1).until(ec.element_to_be_clickable((By.XPATH, locator))).click()
 
     def explicit_wait_n_do_click(self, locator):
         WebDriverWait(self.DRIVER, timeout=5).until(ec.element_to_be_clickable((By.XPATH, locator)))
@@ -47,26 +55,26 @@ class TinyCore(Utils):
         self.DRIVER.execute_script("arguments[0].value='" + text_to_type + "';", self.DRIVER.find_element(By.XPATH,
                                                                                                           locator))
 
-    def efficient_wait_n_force_text_value(self, locator, text_to_type):
+    def fluent_wait_n_force_text_value(self, locator, text_to_type):
         self.DRIVER.execute_script("arguments[0].value='" + text_to_type + "';",
-                                   self.efficient_wait(10, .1).until(ec.element_to_be_clickable((By.XPATH, locator))))
+                                   self.fluent_wait(10, .1).until(ec.element_to_be_clickable((By.XPATH, locator))))
 
     def explicit_wait_n_force_text_value(self, locator, text_to_type):
-        WebDriverWait(self.DRIVER, timeout=3).until(ec.element_to_be_clickable((By.XPATH, locator)))
+        WebDriverWait(self.DRIVER, timeout=5).until(ec.element_to_be_clickable((By.XPATH, locator)))
         self.DRIVER.execute_script("arguments[0].value='" + text_to_type + "';", self.DRIVER.find_element(By.XPATH,
                                                                                                           locator))
 
     def type_in_text_field(self, locator, text_to_type):
         self.DRIVER.find_element(By.XPATH, locator).send_keys(text_to_type)
 
-    def efficient_wait_n_type_in_text_field(self, locator, text_to_type):
-        self.efficient_wait(10, .1).until(ec.element_to_be_clickable((By.XPATH, locator))).send_keys(text_to_type)
+    def fluent_wait_n_type_in_text_field(self, locator, text_to_type):
+        self.fluent_wait(10, .1).until(ec.element_to_be_clickable((By.XPATH, locator))).send_keys(text_to_type)
 
     def explicit_wait_n_type_in_text_field(self, locator, text_to_type):
-        WebDriverWait(self.DRIVER, timeout=3).until(ec.element_to_be_clickable((By.XPATH, locator)))
+        WebDriverWait(self.DRIVER, timeout=5).until(ec.element_to_be_clickable((By.XPATH, locator)))
         self.DRIVER.find_element(By.XPATH, locator).send_keys(text_to_type)
 
-    def efficient_wait(self, waiting_time, refresh_frequency):
+    def fluent_wait(self, waiting_time, refresh_frequency):
         return WebDriverWait(self.DRIVER, waiting_time, poll_frequency=refresh_frequency,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
 
@@ -89,9 +97,6 @@ class ImprovedTinyCore(Utils):
     def launch_site(self, target_url):
         self.DRIVER.get(target_url)
         self.DRIVER.maximize_window()
-
-    def set_implicit_wait(self, waiting_time):
-        self.DRIVER.implicitly_wait(waiting_time)
 
     def do_click(self, locator):
         try:
@@ -141,6 +146,9 @@ class ImprovedTinyCore(Utils):
     def fluent_wait(self, waiting_time, refresh_frequency):
         return WebDriverWait(self.DRIVER, waiting_time, poll_frequency=refresh_frequency,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+
+    def set_implicit_wait(self, waiting_time):
+        self.DRIVER.implicitly_wait(waiting_time)
 
     def explicit_wait_find_element_by_xpath(self, locator):
         try:

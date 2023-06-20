@@ -10,11 +10,11 @@ LOGIN_BUTTON = "//*[@id='login-button']"
 USER_NAME_FORM_FIELD = "//*[@id='user-name']"
 lets_automate.launch_site("https://www.saucedemo.com/")
 
-lets_automate.force_text_value(USER_NAME_FORM_FIELD, "standard_user")
+lets_automate.force_text_value(USER_NAME_FORM_FIELD, "standard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_user")
 time.sleep(2)
 lets_automate.force_text_value(USER_NAME_FORM_FIELD, "clear")
 time.sleep(2)
-lets_automate.type_in_text_field(USER_NAME_FORM_FIELD, "standard_user")
+lets_automate.type_in_text_field(USER_NAME_FORM_FIELD, "standard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_userstandard_user")
 time.sleep(2)
 lets_automate.type_in_text_field(USER_NAME_FORM_FIELD, "clear")
 time.sleep(2)

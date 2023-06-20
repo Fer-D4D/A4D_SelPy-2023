@@ -8,7 +8,7 @@ lets_automate = ImprovedTinyCore()
 lets_automate.set_chrome_driver()
 
 ADVANTAGE_CREATE_NEW_ACCOUNT_BUTTON = "//*[@id='hrefUserIcon']"
-ADVANTAGE_USERNAME_FORM_FIELD = "//*[@name='username']"
+ADVANTAGE_USERNAME_FORM_FIELD = "//*[@name='usernamed']"
 WAITING_TIME = 1
 
 
