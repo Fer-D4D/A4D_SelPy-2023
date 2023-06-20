@@ -16,3 +16,4 @@ time.sleep(5)
 class_login = ".oxd-button oxd-button--medium oxd-button--main orangehrm-login-button"
 
 lets_automate.login_first_try(class_login)
+print(test)
