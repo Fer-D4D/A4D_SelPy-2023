@@ -116,6 +116,7 @@ class enrollment_form(Page):
             print("Character validation failed, you need more than 1 letter please enter a valid name")
         else:
             print("Character validation ok")
+            self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Data.FILL_ENROLL_NAME)
         self.delay_time(2)
         self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Errors_labels.NAME_ERROR_FILL_MAX)
@@ -127,6 +128,7 @@ class enrollment_form(Page):
             print("Character validation failed, max lenght is 60 characters please enter a valid name")
         else:
             print("Character validation ok")
+            self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Data.FILL_ENROLL_NAME)
 
 
 
