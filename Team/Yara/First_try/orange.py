@@ -15,4 +15,10 @@ class TinyCore:
         self.DRIVER.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
         return self.DRIVER
 
+    def login_first_try(self , locator):
+        self.DRIVER.find_element(By.CLASS_NAME, locator).click()
+
+
+
+
 
