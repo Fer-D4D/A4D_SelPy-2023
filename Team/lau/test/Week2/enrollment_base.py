@@ -44,9 +44,12 @@ class Data:
     FILL_ENROLL_PIN = "2938"
 
 class Errors_labels:
-    NAME_ERROR_SPE = "//span[text()='Este campo no cumple con el formato esperado. Evite utilizar caracteres especiales o ( - , _ , ? , / , \ , + , [ , ] , : , ; , = " ",a "," a)).']"
+
     NAME_ERROR_REQ = "//span[text()='El campo es requerido']"
-    NAME_ERROR_FILL = "M@r2"
+    NAME_ERROR_MIN = "//span[text()='Se requieren mínimo 2 caracteres']"
+    NAME_ERROR_FILL_MIN = "M"
+    NAME_ERROR_MAX = "//span[text()='El nombre incluido es muy largo']"
+    NAME_ERROR_FILL_MAX = "asfjahsncksjhsnsjeusjanshrjaksnejsnahrjdnshajrmjalrjajrkamdrk"
 
 class enrollment_form(Page):
 
@@ -95,10 +98,36 @@ class enrollment_form(Page):
         self.launch_enroll_site()
         self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
         self.do_click(By.XPATH, Locators.ENROLL_NAME)
-        errormessage = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR_REQ)
+        self.do_click(By.XPATH, Locators.ENROLL_LASTNAME)
+        errormessagerequired = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR_REQ)
         expected_error_message = "El campo es requerido"
-        if errormessage == expected_error_message:
+        if errormessagerequired == expected_error_message:
             print("Character validation failed, this field is required please enter a valid name")
         else:
-            self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
+            print("Character validation ok")
+        self.delay_time(2)
+        self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Errors_labels.NAME_ERROR_FILL_MIN)
+        min_name_length = self.get_text_to_element(By.XPATH, Locators.ENROLL_NAME)
+        min_name_length = len(min_name_length)
+        errormessagerequired = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR_MIN)
+        expected_error_message = "Se requieren mínimo 2 caracteres"
+        if min_name_length == 1 and errormessagerequired == expected_error_message:
+            print("Character validation failed, you need more than 1 letter please enter a valid name")
+        else:
+            print("Character validation ok")
+        self.delay_time(2)
+        self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
+        self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Errors_labels.NAME_ERROR_FILL_MAX)
+        max_name_length = (By.XPATH, Locators.ENROLL_NAME)
+        max_name_length = len(max_name_length)
+        errormessagerequired = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR_MAX)
+        expected_error_message = "El nombre incluido es muy largo"
+        if max_name_length >= 60 or errormessagerequired == expected_error_message:
+            print("Character validation failed, max lenght is 60 characters please enter a valid name")
+        else:
+            print("Character validation ok")
+
+
+
 
