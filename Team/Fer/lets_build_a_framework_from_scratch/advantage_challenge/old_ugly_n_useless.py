@@ -30,10 +30,10 @@ ADVANTAGE_CREATE_NEW_ACCOUNT_BUTTON = ".create-new-account.ng-scope"
 
 mi_driver.find_element(By.CSS_SELECTOR, ADVANTAGE_CREATE_NEW_ACCOUNT_BUTTON).click()
 
-ADVANTAGE_USERNAME_FORM_FIELD = "//*[@name='add-to-cart-sauce-labs-backpack']"
-ADVANTAGE_EMAIL_FORM_FIELD = "//*[@name='add-to-cart-sauce-labs-backpack']"
-ADVANTAGE_PASSWORD_FORM_FIELD = "//*[@name='add-to-cart-sauce-labs-backpack']"
-ADVANTAGE_CONFIRM_PASSWORD_FORM_FIELD = "//*[@name='add-to-cart-sauce-labs-backpack']"
+ADVANTAGE_USERNAME_FORM_FIELD = "//*[@name='usernameRegisterPage']"
+ADVANTAGE_EMAIL_FORM_FIELD = "//*[@name='emailRegisterPage']"
+ADVANTAGE_PASSWORD_FORM_FIELD = "//*[@name='passwordRegisterPage']"
+ADVANTAGE_CONFIRM_PASSWORD_FORM_FIELD = "//*[@name='confirm_passwordRegisterPage']"
 
 mi_driver.find_element(By.XPATH, ADVANTAGE_USERNAME_FORM_FIELD).send_keys("donfer")
 
