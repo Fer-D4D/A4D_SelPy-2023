@@ -31,10 +31,10 @@ class Page:
         return self.Driver.find_element(by_locator, locator)
 
     def fill_text_to_element(self, by_locator, locator, text):
-        return self.Driver.find_element(by_locator, locator).send_keys(text)
+        self.Driver.find_element(by_locator, locator).send_keys(text)
 
     def do_click(self, by_locator, locator):
-        return self.Driver.find_element(by_locator, locator).click()
+        self.Driver.find_element(by_locator, locator).click()
 
     def get_text_to_element(self, by_locator, locator):
         return self.Driver.find_element(by_locator, locator).text
