@@ -100,7 +100,7 @@ class enrollment_form(Page):
         self.do_click(By.XPATH, Locators.ENROLL_NAME)
         self.do_click(By.XPATH, Locators.ENROLL_LASTNAME)
         errormessagerequired = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR_REQ)
-        expected_error_message = "El campo es requerido" or "The field is required"
+        expected_error_message = "El campo es requerido"
         if errormessagerequired == expected_error_message:
             print("Character validation failed, this field is required please enter a valid name")
         else:
