@@ -44,8 +44,9 @@ class Data:
     FILL_ENROLL_PIN = "2938"
 
 class Errors_labels:
-    NAME_ERROR = "//span[text()='Este campo no cumple con el formato esperado. Evite utilizar caracteres especiales o ( - , _ , ? , / , \ , + , [ , ] , : , ; , = " ",a "," a)).']"
-    NAME_ERROR_FILL = "M4RI@"
+    NAME_ERROR_SPE = "//span[text()='Este campo no cumple con el formato esperado. Evite utilizar caracteres especiales o ( - , _ , ? , / , \ , + , [ , ] , : , ; , = " ",a "," a)).']"
+    NAME_ERROR_REQ = "//span[text()='El campo es requerido']"
+    NAME_ERROR_FILL = "M@r2"
 
 class enrollment_form(Page):
 
@@ -93,10 +94,11 @@ class enrollment_form(Page):
     def validate_name_error(self):
         self.launch_enroll_site()
         self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
-        self.fill_text_to_element(By.XPATH, Locators.ENROLL_NAME, Errors_labels.NAME_ERROR_FILL)
-        errormessage = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR)
-        expected_error_message = "Este campo no cumple con el formato esperado. Evite utilizar caracteres especiales o ( - , _ , ? , / , \ , + , [ , ] , : , ; , = " ',a ',' a)).'
+        self.do_click(By.XPATH, Locators.ENROLL_NAME)
+        errormessage = self.get_text_to_element(By.XPATH, Errors_labels.NAME_ERROR_REQ)
+        expected_error_message = "El campo es requerido"
         if errormessage == expected_error_message:
-            print("Character validation failed, please enter a valid name")
+            print("Character validation failed, this field is required please enter a valid name")
         else:
-            print("Test failed")
+            self.find_text_to_element(By.XPATH, Locators.ENROLL_NAME).clear()
+
