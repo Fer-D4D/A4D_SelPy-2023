@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common import ElementClickInterceptedException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -15,8 +16,24 @@ class TinyCore:
         self.DRIVER.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
         return self.DRIVER
 
-    def login_first_try(self , locator):
-        self.DRIVER.find_element(By.CLASS_NAME, locator).click()
+    def login_success(self,locator,user,locator_pass,password,locator_button):
+        try:
+            self.DRIVER.find_element(By.NAME,locator).send_keys(user)
+            self.DRIVER.find_element(By.NAME, locator_pass).send_keys(password)
+            self.DRIVER.find_element(By.XPATH, locator_button).click()
+
+        except ElementClickInterceptedException:
+
+            print("Re-clicking")
+
+
+
+
+
+
+
+
+
 
 
 
