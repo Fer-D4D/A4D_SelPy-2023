@@ -2,7 +2,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common import ElementClickInterceptedException
+#ElementNotVisibleException, ElementNotSelectableException, NoSuchElementException,TimeoutException, InvalidSelectorException,
 import time
+
 class Page:
 
     Driver = None
@@ -34,7 +37,12 @@ class Page:
         self.Driver.find_element(by_locator, locator).send_keys(text)
 
     def do_click(self, by_locator, locator):
-        self.Driver.find_element(by_locator, locator).click()
+        try:
+            self.Driver.find_element(by_locator, locator).click()
+        except ElementClickInterceptedException:
+            self.delay_time(.25)
+            print("Re-clicking")
+            self.do_click(by_locator, locator)
 
     def get_text_to_element(self, by_locator, locator):
         return self.Driver.find_element(by_locator, locator).text
