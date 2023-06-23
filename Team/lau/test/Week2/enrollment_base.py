@@ -92,7 +92,6 @@ class enrollment_form(Page):
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_PASSWORD, Data.FILL_ENROLL_PASSWORD)
         self.fill_text_to_element(By.XPATH, Locators.ENROLL_PIN, Data.FILL_ENROLL_PIN)
         self.do_click(By.XPATH, Locators.ENROLL_BUTTON)
-        self.do_click(By.XPATH, Locators.ACCEPT_MODAL_BUTTON)
 
     def validate_name_error(self):
         self.launch_enroll_site()
