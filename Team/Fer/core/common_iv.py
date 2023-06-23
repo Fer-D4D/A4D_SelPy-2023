@@ -5,7 +5,7 @@ from selenium.common import ElementNotVisibleException, ElementNotSelectableExce
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
-from Team.Fer.core.utils import Utils, Using, timer
+from Team.Fer.core.utils import Utils, Using, timer, oneSec
 
 
 class TinyCore(Utils):
@@ -23,6 +23,7 @@ class TinyCore(Utils):
         self.MAIN_DRIVER.get(target_url)
         self.MAIN_DRIVER.maximize_window()
 
+
     def find_element_by_tiny(self, locator_definition, dynamic_selector_subtext=""):
         byString = self.build_byString(locator_definition, dynamic_selector_subtext)
         if self.validate_object(byString):
@@ -32,6 +33,7 @@ class TinyCore(Utils):
             except (NoSuchElementException, InvalidSelectorException, TimeoutException):
                 return None
 
+    @oneSec
     def do_click(self, target_locator):
         try:
             wElement = self.find_element_by_tiny(target_locator)

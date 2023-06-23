@@ -16,9 +16,24 @@ def timer(f):
         stop_time = time.time()
         dt = stop_time - start_time
         print(f"Δt = {dt}")
-
+        return result
     return wrapper
 
+
+def oneSec(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        time.sleep(1)
+        return result
+    return wrapper
+
+def twoSec(func):
+    def wrapper(*args, **kwargs):
+
+        result = func(*args, **kwargs)
+        time.sleep(2)
+        return result
+    return wrapper
 
 class Using:
     Chrome = "chrome"
@@ -55,7 +70,6 @@ class Utils:
             return webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
         if browser == "chrome":
             return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-
 
     @staticmethod
     def translate_to_boolean(entry_value, baseline_for_true="on"):

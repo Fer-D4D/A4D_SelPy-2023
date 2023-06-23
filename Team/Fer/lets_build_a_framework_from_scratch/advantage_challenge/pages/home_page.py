@@ -1,4 +1,5 @@
 from Team.Fer.core.common_iv import TinyCore
+from Team.Fer.core.utils import timer
 from Team.Fer.lets_build_a_framework_from_scratch.advantage_challenge.pages.create_new_account import CreateAccount
 
 
@@ -25,6 +26,7 @@ class HomePage(TinyCore):
         return self.do_click_and_check(LOCATORS.USER_MENU_ICON,
                                        LOCATORS.SIGN_IN_FORM_USERNAME_FIELD)
 
+    @timer
     def go_create_new_account_page(self):
         if self.do_click_and_check(LOCATORS.USER_MENU_ICON,
                                    LOCATORS.SIGN_IN_FORM_USERNAME_FIELD) and \
