@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common import WebDriverException
 from selenium.common import ElementClickInterceptedException
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -49,8 +48,7 @@ class Page:
         try:
             self.Driver.find_element(by_locator, locator).click()
         except ElementClickInterceptedException:
-            self.delay_time(.25)
-            print("Re-clicking")
+            self.delay_time(1)
             self.do_click(by_locator, locator)
 
     def get_text_to_element(self, by_locator, locator):
@@ -69,11 +67,8 @@ class Page:
         self.fill_text_to_element(args[2], args[3], args[4]),
         self.do_click(args[5], args[6])
 
-    def set_pageload_timeout(self, time_to_wait):
-        try:
-            self.Driver.set_page_load_timeout({"pageLoad": int(float(time_to_wait) * 1000)})
-        except WebDriverException:
-            self.Driver.set_page_load_timeout({"ms": float(time_to_wait) * 1000, "type": "page load"})
+    def set_timeout_page(self):
+        self.Driver.set_page_load_timeout(.20)
 
 
 
