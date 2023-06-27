@@ -3,6 +3,10 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common import ElementClickInterceptedException
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
 #ElementNotVisibleException, ElementNotSelectableException, NoSuchElementException,TimeoutException, InvalidSelectorException,
 import time
 
@@ -15,6 +19,11 @@ class Page:
     #     print("Driver created")
     def create_driver(self):
         self.Driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    def create_edge_driver(self):
+        self. Driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+
+    def create_firefox_driver(self):
+        self. Driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
     def set_driver(self, InDriver):
         self.Driver = InDriver
@@ -59,6 +68,12 @@ class Page:
         self.do_click(args[0], args[1]),
         self.fill_text_to_element(args[2], args[3], args[4]),
         self.do_click(args[5], args[6])
+
+##example
+#server translate webdriver protocol into a automation
+    # def ejemplo(self, locator):
+    #     self.Driver.find_element_element_by_css_selector(locator)
+
 
     # def do_login(self, *args):
     #     print(args)
