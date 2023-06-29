@@ -49,7 +49,7 @@ class Page:
             self.Driver.find_element(by_locator, locator).click()
         except ElementClickInterceptedException:
             self.delay_time(1)
-            self.do_click(by_locator, locator)
+            self.do_click(by_locator, locator)# e
 
     def get_text_to_element(self, by_locator, locator):
         return self.Driver.find_element(by_locator, locator).text
