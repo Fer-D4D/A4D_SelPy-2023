@@ -17,6 +17,7 @@ def timer(f):
         dt = stop_time - start_time
         print(f"Δt = {dt}")
         return result
+
     return wrapper
 
 
@@ -25,15 +26,23 @@ def oneSec(func):
         result = func(*args, **kwargs)
         time.sleep(1)
         return result
+
     return wrapper
+
 
 def twoSec(func):
     def wrapper(*args, **kwargs):
-
         result = func(*args, **kwargs)
         time.sleep(2)
         return result
+
     return wrapper
+
+
+def sleepy_dog(waiting_time=2):
+    for idx in range(1, waiting_time):
+        time.sleep(1)
+
 
 class Using:
     Chrome = "chrome"

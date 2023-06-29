@@ -26,7 +26,7 @@ mi_driver.get("https://www.saucedemo.com/")
 
 
 class locators:
-    USER_NAME_FORM_FIELD = "//*[@id='user-name']"
+    USER_NAME_FORM_FIELD = "XPATH://*[@id='user-name']"
     PASSWORD_FORM_FIELD = "#password"
     LOGIN_BUTTON = "login-button"
 
@@ -57,6 +57,11 @@ def DAR_CLICK(customBy, locator):
     mi_driver.find_element(customBy, locator).click()
 
 
-poner_texto(miBy.XPATH, locators.USER_NAME_FORM_FIELD, data.USER_NAME)
-poner_texto(miBy.CSS_SELECTOR, locators.PASSWORD_FORM_FIELD, data.PASSWORD)
-DAR_CLICK(miBy.ID, locators.LOGIN_BUTTON)
+
+
+def haz_login():
+    poner_texto(miBy.XPATH, locators.USER_NAME_FORM_FIELD, data.USER_NAME)
+    poner_texto(miBy.CSS_SELECTOR, locators.PASSWORD_FORM_FIELD, data.PASSWORD)
+    DAR_CLICK(miBy.ID, locators.LOGIN_BUTTON)
+
+haz_login()
