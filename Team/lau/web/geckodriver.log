@@ -1,0 +1,33 @@
+1695068424942	geckodriver	INFO	Listening on 127.0.0.1:51308
+1695068425507	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/App ... s" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/vx/b_dy2cnx0f7f0frl4dlrcl680000gp/T/rust_mozprofileymP4sG"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695068426536	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-remote-allow-hosts"
+1695068426805	Marionette	INFO	Listening on port 51431
+Read port: 51431
+WebDriver BiDi listening on ws://127.0.0.1:51309
+1695068426930	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+DevTools listening on ws://127.0.0.1:51309/devtools/browser/76f7d57a-ebc9-4d8a-a4f0-0b09555548b0
+1695068428175	Marionette	INFO	Stopped listening on port 51431
+console.error: (new TypeError("NetworkError: Network request failed", "resource://services-settings/Utils.sys.mjs", 229))
+!!! error running onStopped callback: TypeError: callback is not a function
+console.error: (new Error("IndexedDB: main/doh-providers list() IndexedDB:  execute() The application is shutting down", "resource://services-settings/IDBHelpers.sys.mjs", 16))
+console.error: (new Error("IndexedDB: main/doh-config getLastModified() IndexedDB:  execute() The application is shutting down", "resource://services-settings/IDBHelpers.sys.mjs", 16))
+1695068437795	geckodriver	INFO	Listening on 127.0.0.1:51488
+1695068438307	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/App ... s" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/vx/b_dy2cnx0f7f0frl4dlrcl680000gp/T/rust_mozprofileuNkgQp"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695068438641	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-remote-allow-hosts"
+1695068438783	Marionette	INFO	Listening on port 51498
+Read port: 51498
+WebDriver BiDi listening on ws://127.0.0.1:51489
+1695068438886	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+DevTools listening on ws://127.0.0.1:51489/devtools/browser/55896d19-bca6-4f0a-a1e7-d03b4c436c66
+1695068439724	Marionette	INFO	Stopped listening on port 51498
+console.error: (new TypeError("NetworkError: Network request failed", "resource://services-settings/Utils.sys.mjs", 229))
+console.error: (new AbortError("IndexedDB: main/doh-providers list() IndexedDB:  execute() A request was aborted, for example through a call to IDBTransaction.abort.", "resource://services-settings/IDBHelpers.sys.mjs", 16))
+console.error: (new Error("IndexedDB: main/doh-config getLastModified() IndexedDB:  execute() The application is shutting down", "resource://services-settings/IDBHelpers.sys.mjs", 16))
