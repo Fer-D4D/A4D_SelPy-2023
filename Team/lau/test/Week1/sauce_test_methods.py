@@ -73,6 +73,7 @@ class Page:
         except (WebDriverException, TimeoutException):
             return None
 
+
     # def do_login(self, *args):
     #     print(args)
     #     self.fill_text_to_element(args[0], args[1], args[2])

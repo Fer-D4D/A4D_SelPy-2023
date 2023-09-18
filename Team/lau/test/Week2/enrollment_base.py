@@ -28,7 +28,6 @@ class Locators:
     ENROLL_PIN = "//input[@id='mui-5']"
     ENROLL_BUTTON = "/html/body/div[1]/div[3]/div/div/form/div[3]/div[6]/button"
     ACCEPT_MODAL_BUTTON = "/html/body/div[5]/div[3]/div[2]/button[2]"
-
 class Data:
     FILL_ENROLL_NAME = "Maria"
     FILL_ENROLL_LASTNAME = "Galindo"
