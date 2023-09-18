@@ -13,7 +13,7 @@ DRIVER.implicitly_wait(5)
 #page
 DRIVER.get(PAGE)
 
-#In this class can fin the locators
+#In this class can fin the locators_strategies
 class locators:
 
     locator_user = "username"
