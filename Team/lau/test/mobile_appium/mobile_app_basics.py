@@ -1,0 +1,25 @@
+#NATIVE APPS, DOWNLOAD FROM AN APP STORE (IPA(ONLY REAL DEVICE) OR .APP IOS -APK ANDROID)
+#MOBILE WEB APPS: USING WEB BROWSER
+#HYBRID APPS: NATIVE APP WHERE SOME OR ALL FUNCTIONALITIES ARE INSIDE A WEBVIEW, SAFARI AND CHROME
+
+#REACT NATIVE APP, WRITE AN APP USING HTML,JS,CSS EASY FOR DEVS TO UNDERSTAND
+
+#CREATE AN APPIUM SESSION
+## 1. APPIUM SERVER RUNNING,
+## 2. COPY APP BUILD SOMEWHERE, LAST BUILD FOR THE DEVS
+## 3.APP CONNECT TO THE DEVICE, SIMULATORS,EMOLATORS,REAL DEVICES ( CONNECTED AND RUNNING)
+## 4.START SESSION
+
+### FORMAT
+#MOBILE BROWSER TO NAVIGATE
+#NATIVE OR HYBRED APP BINARY, DBUG OR DEVELOP BUILD
+#API ANDROID
+#.APP.ZIP - IPA IOS
+
+#CAPABILITIES
+#1. platformName > platform you want to automate
+#2. platformVersion > version string
+#3. deviceName > appium server information about the specific device to automate ( iphone11pro)
+#4. automationName > name of the driver and run the commands
+#5. browserName > safary on ios, chrome on android.
+#5. appName > absolute path apk or app.zop file  (native)
