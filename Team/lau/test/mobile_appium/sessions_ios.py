@@ -16,7 +16,7 @@ CAPS = {
 
 driver = webdriver.Remote(
     command_executor=APPIUM,
-    desired_capabilities=CAPS
+    options=CAPS,
 )
 driver.quit()
 
