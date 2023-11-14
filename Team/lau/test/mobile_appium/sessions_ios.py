@@ -1,22 +1,20 @@
 from appium import webdriver
 from os import path
-
-CUR_DIR = path.dirname(path.abspath(__file__)) #variable to the field incounter
-APP = path.join(CUR_DIR, 'TheApp.app.zip') #get actual path
-APPIUM = 'http://localhost:4723' #location url to research the service
-#define capabilities
-
+CUR_DIR = path.dirname(path.abspath(__file__)) # variable to the field encounter
+APP = path.join(CUR_DIR, 'TheApp.app.zip') # get actual path
+APPIUM = 'http://127.0.0.1:4723/' # location URL to reach the service
+# define capabilities
 CAPS = {
     'platformName': 'iOS',
-    'platformVersion': '13.6',
-    'deviceName': 'iPhone 11',
+    'platformVersion': '16.2',
+    'deviceName': 'iPhone 14 Pro',
     'automationName': 'XCUITest',
     'app': APP,
 }
 
 driver = webdriver.Remote(
     command_executor=APPIUM,
-    options=CAPS,
+    options=None
 )
 driver.quit()
 
