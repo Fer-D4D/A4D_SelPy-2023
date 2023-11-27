@@ -8,24 +8,20 @@ APPIUM = 'http://localhost:4723/' # location URL to reach the service
 
 # define capabilities
 CAPS = {
-    'platformName': 'iOS',
-    'platformVersion': '16.2',
-    'deviceName': 'iPhone 14 Pro',
-    'automationName': 'XCUITest',
-    'app': APP
+    "platformName": "iOS",
+    "appium:options": {
+        "automationName": "XCUITest",
+        "platformVersion": "16.0",
+        "app": APP,
+        "deviceName": "iPhone 12",
+        "noReset": True
+    }
 }
-
-capabilities_option = XCUITestOptions().load_capabilities(CAPS)
-
 driver = webdriver.Remote(
     command_executor=APPIUM,
-    options=capabilities_option
+    desired_capabilities=CAPS
 )
 
-
-#driver = webdriver.Remote(
-    #command_executor=APPIUM,
-    #options=None)
-#driver.quit()
+driver.quit()
 
 
